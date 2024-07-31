@@ -2,6 +2,20 @@
 
 An example project using testcontainers along with FastAPI.
 
+## Overview
+
+This project demonstrates how to use [Testcontainers](https://testcontainers.readthedocs.io/en/latest/) to run a 
+PostgreSQL container for integration testing with a FastAPI application.
+
+The project also includes examples of using [Pytest](https://docs.pytest.org/en/stable/) for unit and integration testing,
+as well as [Pytest-BDD](https://pytest-bdd.readthedocs.io/en/latest/) for behavior-driven development (BDD) testing.
+
+## Requirements
+
+- Python 3.12+
+- Docker
+- Docker Compose
+
 ## Project Structure
 
 ```text
