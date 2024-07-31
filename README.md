@@ -1,7 +1,51 @@
-# testcontainer-fastapi-demo
+# A FastAPI Demo with Testcontainers
 
 An example project using testcontainers along with FastAPI.
 
+## Project Structure
+
+```text
+testcontainer-fastapi-demo/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── endpoints/
+│   │   │   ├── __init__.py
+│   │   │   └── example.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   └── config.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── example.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   └── example.py
+│   ├── crud/
+│   │   ├── __init__.py
+│   │   └── example.py
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── test_example.py
+│   ├── bdd/
+│   │   ├── __init__.py
+│   │   ├── features/
+│   │   │   └── example.feature
+│   │   ├── steps/
+│   │   │   └── test_example_steps.py
+│   ├── integration/
+│   │   ├── __init__.py
+│   │   └── test_example_integration.py
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── setup.cfg
+├── setup.py
+├── README.md
+```
 
 ## Installation
 
