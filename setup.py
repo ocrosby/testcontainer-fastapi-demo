@@ -1,3 +1,7 @@
+"""
+This script is used to package the project into a distributable format.
+"""
+
 from setuptools import setup, find_packages
 
 setup(
