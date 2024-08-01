@@ -4,6 +4,14 @@
 
 An example project using testcontainers along with FastAPI.
 
+If you are new to Testcontainers, it is a Python library that allows you to easily run Docker containers for 
+testing purposes. This allows you to run your tests in an isolated environment without having to install and manage 
+dependencies on your local machine. Testcontainers supports a variety of containers, including databases, message
+brokers, and web servers. I really like the idea because it allows you to run your tests in a consistent environment
+without having to worry about using docker-compose or other tools to manage your test environment.  Just run them 
+and forget them.  It's my thought that in the local development environment this technique will help me to become 
+more productive and efficient.
+
 ## Overview
 
 This project demonstrates how to use [Testcontainers](https://testcontainers.readthedocs.io/en/latest/) to run a 
