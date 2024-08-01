@@ -20,4 +20,4 @@ def postgres_container():
 
         yield postgres
 
-    postgres.stop()
+    # postgres.stop()
