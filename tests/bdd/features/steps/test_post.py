@@ -26,10 +26,8 @@ def delete_post_by_id():
     pass
 
 
-
-
-@given(parsers.parse('there is a post with ID {id:d}'))
-def post_with_id(id: int):
+@given(parsers.parse('there is a post with ID {post_id:d}'))
+def post_with_id(post_id: int):
     pass
 
 
@@ -48,8 +46,8 @@ def send_request_to_resource(method: str, resource: str):
     pass
 
 
-@then(parsers.parse('the response should contain the post ID {id}'))
-def response_contains_post_id(id: int):
+@then(parsers.parse('the response should contain the post ID {post_id}'))
+def response_contains_post_id(post_id: int):
     pass
 
 
