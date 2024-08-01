@@ -5,6 +5,7 @@ import os
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from psycopg2 import OperationalError
 
 
 def get_db_connection():
@@ -23,3 +24,21 @@ def get_db_connection():
     )
 
     return conn
+
+
+def check_database_connection() -> bool:
+    """
+    Check the database connection
+
+    :return: True if the connection is successful, False otherwise
+    """
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1")
+        cursor.close()
+        connection.close()
+        return True
+    except OperationalError:
+        return False
+

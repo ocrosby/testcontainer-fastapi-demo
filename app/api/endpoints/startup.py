@@ -4,7 +4,8 @@ This module contains the FastAPI application startup endpoint.
 
 # app/api/endpoints/startup.py
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from app.core.database import check_database_connection
 
 router = APIRouter()
 
@@ -16,4 +17,7 @@ async def startup():
 
     :return:
     """
+    if not check_database_connection():
+        raise HTTPException(status_code=503, detail="Service Unavailable")
+
     return {"status": "started"}
