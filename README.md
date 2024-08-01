@@ -226,6 +226,45 @@ testcontainer-fastapi-demo/
     pytest
     ```
 
+## Docker
+
+Build the docker image
+
+```shell
+docker build -t testcontainer-fastapi-demo:latest .
+```
+
+Run the docker container
+
+```shell
+docker run -d -p 8000:8000 testcontainer-fastapi-demo:latest
+```
+
+Stop the docker container
+
+```shell
+docker stop $(docker ps -a -q --filter ancestor=testcontainer-fastapi-demo:latest)
+```
+
+Remove the docker container
+
+```shell
+docker rm $(docker ps -a -q --filter ancestor=testcontainer-fastapi-demo:latest)
+```
+
+Remove the docker image
+
+```shell
+docker rmi testcontainer-fastapi-demo:latest
+```
+
+Prune dangling images (free up disk space)
+
+```shell
+docker image prune -f
+```
+
+
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more details.

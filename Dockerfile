@@ -1,14 +1,18 @@
 # Use the official Python image from the Docker Hub
-FROM python:3.12-slim
+FROM python:3.12-alpine
 
 # Set the working directory in the container
 WORKDIR /app
+
+# Install dependencies
+RUN apk add --no-cache gcc musl-dev libffi-dev postgresql-dev
 
 # Copy the requirements file into the container
 COPY requirements.txt .
 
 # Install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install -r requirements.txt
 
 # Copy the rest of the application code into the container
 COPY . .

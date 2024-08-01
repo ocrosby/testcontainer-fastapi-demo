@@ -33,3 +33,5 @@ freeze:
 	@pip freeze > requirements.txt
 
 
+docker:
+	docker build -t testcontainer-fastapi-demo:latest .
