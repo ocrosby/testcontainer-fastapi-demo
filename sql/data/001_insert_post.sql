@@ -1,0 +1,15 @@
+INSERT INTO posts (title, content) VALUES ('Post 1', 'Content for post 1');
+INSERT INTO posts (title, content) VALUES ('Post 2', 'Content for post 2');
+INSERT INTO posts (title, content) VALUES ('Post 3', 'Content for post 3');
+INSERT INTO posts (title, content) VALUES ('Post 4', 'Content for post 4');
+INSERT INTO posts (title, content) VALUES ('Post 5', 'Content for post 5');
+INSERT INTO posts (title, content) VALUES ('Post 6', 'Content for post 6');
+INSERT INTO posts (title, content) VALUES ('Post 7', 'Content for post 7');
+INSERT INTO posts (title, content) VALUES ('Post 8', 'Content for post 8');
+INSERT INTO posts (title, content) VALUES ('Post 9', 'Content for post 9');
+INSERT INTO posts (title, content) VALUES ('Post 10', 'Content for post 10');
+INSERT INTO posts (title, content) VALUES ('Post 11', 'Content for post 11');
+INSERT INTO posts (title, content) VALUES ('Post 12', 'Content for post 12');
+INSERT INTO posts (title, content) VALUES ('Post 13', 'Content for post 13');
+INSERT INTO posts (title, content) VALUES ('Post 14', 'Content for post 14');
+INSERT INTO posts (title, content) VALUES ('Post 15', 'Content for post 15');
