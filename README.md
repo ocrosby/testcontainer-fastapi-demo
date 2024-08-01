@@ -1,5 +1,7 @@
 # A FastAPI Demo with Testcontainers
 
+[![CI](https://github.com/ocrosby/testcontainer-fastapi-demo/actions/workflows/ci.yaml/badge.svg)](https://github.com/ocrosby/testcontainer-fastapi-demo/actions/workflows/ci.yaml)
+
 An example project using testcontainers along with FastAPI.
 
 ## Overview
