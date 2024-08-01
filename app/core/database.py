@@ -41,4 +41,3 @@ def check_database_connection() -> bool:
         return True
     except OperationalError:
         return False
-
