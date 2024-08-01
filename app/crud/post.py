@@ -4,11 +4,8 @@ CRUD for post
 
 from typing import List, Optional
 
-from sqlalchemy.orm import Session
-
-from app.models.post import Post as PostModel
 from app.schemas.post import PostCreate, PostUpdate
-from app.core.database import SessionLocal
+from app.core.database import get_db_connection
 
 
 class CRUDPost:
@@ -20,67 +17,105 @@ class CRUDPost:
         """
         CRUD for post
         """
-        self.db: Session = SessionLocal()
+        self.conn = get_db_connection()
 
-    def create_post(self, post: PostCreate) -> PostModel:
+    def create_post(self, post: PostCreate) -> int:
         """
         Create a post
 
         :param post:
-        :return:
+        :return: post_id
         """
-        db_post = PostModel(**post.dict())
-        self.db.add(db_post)
-        self.db.commit()
-        self.db.refresh(db_post)
-        return db_post
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO posts (title, content, published)
+                VALUES (%s, %s, %s)
+                RETURNING id
+                """,
+                (post.title, post.content, post.published),
+            )
+            post_id = cursor.fetchone()[0]
+            self.conn.commit()
 
-    def get_post(self, post_id: int) -> Optional[PostModel]:
+        return post_id
+
+    def get_post(self, post_id: int) -> Optional[dict]:
         """
         Get a post
 
         :param post_id:
-        :return:
+        :return: post data as dictionary
         """
-        return self.db.query(PostModel).filter(PostModel.id == post_id).first()
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id, title, content, published
+                FROM posts
+                WHERE id = %s
+                """,
+                (post_id,),
+            )
+            post = cursor.fetchone()
 
-    def get_posts(self) -> List[PostModel]:
+        return dict(post) if post else None
+
+    def get_posts(self) -> List[dict]:
         """
         Get all posts
 
-        :return:
+        :return: list of post data as dictionaries
         """
-        return self.db.query(PostModel).all()
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id, title, content, published
+                FROM posts
+                """
+            )
+            posts = cursor.fetchall()
 
-    def update_post(self, post_id: int, post: PostUpdate) -> Optional[PostModel]:
+        return [dict(post) for post in posts]
+
+    def update_post(self, post_id: int, post: PostUpdate) -> bool:
         """
         Update a post
 
         :param post_id:
         :param post:
-        :return:
+        :return: True if post is updated, False otherwise
         """
-        db_post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
-        if db_post:
-            for key, value in post.dict(exclude_unset=True).items():
-                setattr(db_post, key, value)
-            self.db.commit()
-            self.db.refresh(db_post)
-        return db_post
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE posts
+                SET title = %s, content = %s, published = %s
+                WHERE id = %s
+                """,
+                (post.title, post.content, post.published, post_id),
+            )
+            self.conn.commit()
+
+        return cursor.rowcount > 0
 
     def delete_post(self, post_id: int) -> bool:
         """
         Delete a post
 
         :param post_id:
-        :return:
+        :return: True if post is deleted, False otherwise
         """
-        db_post = self.db.query(PostModel).filter(PostModel.id == post_id).first()
-        if db_post:
-            self.db.delete(db_post)
-            self.db.commit()
-            return True
-        return False
+        with self.conn.cursor() as cursor:
+            cursor.execute(
+                """
+                DELETE FROM posts
+                WHERE id = %s
+                """,
+                (post_id,),
+            )
+            self.conn.commit()
+
+        return cursor.rowcount > 0
 
 
 crud_post = CRUDPost()

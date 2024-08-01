@@ -1,19 +1,21 @@
 """
-Post model
+This module contains the Post model.
 """
 
-from sqlalchemy import Column, Integer, String
-from app.core.database import Base
+from typing import Optional
+from pydantic import BaseModel
 
 
-class Post(Base):
+class Post(BaseModel):
     """
     Post model
     """
+    id: Optional[int]
+    title: str
+    content: str
 
-    __tablename__ = "posts"
-
-    id = Column(Integer, primary_key=True, index=True)
-    userId = Column(Integer, index=True)
-    title = Column(String, index=True)
-    body = Column(String, index=True)
+    class Config:
+        """
+        This class is used to configure the Pydantic model.
+        """
+        orm_mode = True

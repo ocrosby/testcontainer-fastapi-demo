@@ -6,8 +6,8 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException
 
-from app.models.post import Post
 from app.crud.post import crud_post
+from app.models.post import Post
 
 router = APIRouter()
 

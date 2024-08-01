@@ -1,14 +1,25 @@
 """
 This file contains the database connection and session creation.
 """
+import os
 
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from app.core.config import settings
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
-SQLALCHEMY_DATABASE_URL = settings.database_url
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+def get_db_connection():
+    """
+    Get the database connection
+
+    :return: database connection
+    """
+    conn = psycopg2.connect(
+        dbname=os.getenv("DB_NAME", "postgres"),
+        user=os.getenv("DB_USERNAME", "postgres"),
+        password=os.getenv("DB_PASSWORD", "postgres"),
+        host=os.getenv("DB_HOST", "localhost"),
+        port=os.getenv("DB_PORT", "5432"),
+        cursor_factory=RealDictCursor
+    )
+
+    return conn
