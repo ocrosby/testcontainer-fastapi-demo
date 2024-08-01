@@ -12,6 +12,122 @@ without having to worry about using docker-compose or other tools to manage your
 and forget them.  It's my thought that in the local development environment this technique will help me to become 
 more productive and efficient.
 
+```mermaid
+graph TD
+    subgraph Local Development Environment
+        subgraph Docker
+            direction TB
+            A[Docker Compose]
+            A --> B[PostgreSQL Container]
+            A --> C[FastAPI Container]
+        end
+        subgraph PyCharm
+            direction TB
+            D[IDE]
+            D --> E[Run/Debug Configuration]
+            D --> F[Database Tool Window]
+        end
+    end
+
+    subgraph Project Structure
+        G[app]
+        H[tests]
+        I[scripts]
+        J[sql]
+        K[Dockerfile]
+        L[docker-compose.yml]
+        M[requirements.txt]
+        N[setup.cfg]
+        O[setup.py]
+        P[README.md]
+    end
+
+    subgraph app
+        G1[__init__.py]
+        G2[main.py]
+        G3[api]
+        G4[core]
+        G5[models]
+        G6[schemas]
+        G7[crud]
+    end
+
+    subgraph api
+        G3_1[__init__.py]
+        G3_2[endpoints]
+    end
+
+    subgraph endpoints
+        G3_2_1[__init__.py]
+        G3_2_2[example.py]
+    end
+
+    subgraph core
+        G4_1[__init__.py]
+        G4_2[config.py]
+    end
+
+    subgraph models
+        G5_1[__init__.py]
+        G5_2[example.py]
+    end
+
+    subgraph schemas
+        G6_1[__init__.py]
+        G6_2[example.py]
+    end
+
+    subgraph crud
+        G7_1[__init__.py]
+        G7_2[example.py]
+    end
+
+    subgraph tests
+        H1[__init__.py]
+        H2[conftest.py]
+        H3[test_example.py]
+        H4[bdd]
+        H5[integration]
+    end
+
+    subgraph bdd
+        H4_1[__init__.py]
+        H4_2[features]
+        H4_3[steps]
+    end
+
+    subgraph features
+        H4_2_1[example.feature]
+    end
+
+    subgraph steps
+        H4_3_1[test_example_steps.py]
+    end
+
+    subgraph integration
+        H5_1[__init__.py]
+        H5_2[test_example_integration.py]
+    end
+
+    subgraph scripts
+        I1[create_schema.py]
+    end
+
+    subgraph sql
+        J1[001_create_posts_table.sql]
+        J2[002_create_users_table.sql]
+        J3[003_create_comments_table.sql]
+        J4[data]
+    end
+
+    subgraph data
+        J4_1[001_insert_posts.sql]
+        J4_2[002_insert_users.sql]
+        J4_3[003_insert_comments.sql]
+    end
+```
+
+
 ## Overview
 
 This project demonstrates how to use [Testcontainers](https://testcontainers.readthedocs.io/en/latest/) to run a 
