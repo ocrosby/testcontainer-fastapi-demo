@@ -118,6 +118,107 @@ testcontainer-fastapi-demo/
 
 2. Open your browser and navigate to `http://127.0.0.1:8000/docs` to see the interactive API documentation.
 
+
+## Routes
+
+### API Routes Documentation
+
+#### Health Check Endpoints
+- **Readiness Probe**
+  - **Endpoint:** `/health/readiness`
+  - **Method:** GET
+  - **Description:** Checks if the application is ready to serve requests.
+
+- **Liveness Probe**
+  - **Endpoint:** `/health/liveness`
+  - **Method:** GET
+  - **Description:** Checks if the application is alive.
+
+- **Startup Probe**
+  - **Endpoint:** `/health/startup`
+  - **Method:** GET
+  - **Description:** Checks if the application has started up correctly.
+
+#### Post Endpoints
+- **Create Post**
+  - **Endpoint:** `/posts`
+  - **Method:** POST
+  - **Description:** Creates a new post.
+  - **Request Body:**
+    ```json
+    {
+      "title": "string",
+      "content": "string"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "integer",
+      "title": "string",
+      "content": "string"
+    }
+    ```
+
+- **Get All Posts**
+  - **Endpoint:** `/posts`
+  - **Method:** GET
+  - **Description:** Retrieves all posts.
+  - **Response:**
+    ```json
+    [
+      {
+        "id": "integer",
+        "title": "string",
+        "content": "string"
+      }
+    ]
+    ```
+
+- **Get Post by ID**
+  - **Endpoint:** `/posts/{id}`
+  - **Method:** GET
+  - **Description:** Retrieves a post by its ID.
+  - **Response:**
+    ```json
+    {
+      "id": "integer",
+      "title": "string",
+      "content": "string"
+    }
+    ```
+
+- **Update Post**
+  - **Endpoint:** `/posts/{id}`
+  - **Method:** PUT
+  - **Description:** Updates a post by its ID.
+  - **Request Body:**
+    ```json
+    {
+      "title": "string",
+      "content": "string"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "integer",
+      "title": "string",
+      "content": "string"
+    }
+    ```
+
+- **Delete Post**
+  - **Endpoint:** `/posts/{id}`
+  - **Method:** DELETE
+  - **Description:** Deletes a post by its ID.
+  - **Response:**
+    ```json
+    {
+      "message": "Post deleted successfully"
+    }
+    ```
+
 ## Running Tests
 
 1. To run the tests, use the following command:
