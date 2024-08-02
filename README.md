@@ -271,6 +271,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 ## References
 
+- [Rest API Tutorial](https://restfulapi.net/)
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Testcontainers](https://testcontainers.readthedocs.io/en/latest/)
 - [Pytest](https://docs.pytest.org/en/stable/)

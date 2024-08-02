@@ -1,8 +1,8 @@
 """
-This module contains the FastAPI application startup endpoint.
+This module contains the FastAPI application startup.py endpoint.
 """
 
-# app/api/endpoints/startup.py
+# app/api/endpoints/startup.py.py
 
 from fastapi import APIRouter, HTTPException
 from app.core.database import check_database_connection
@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("/startup")
 async def startup():
     """
-    This function returns the startup status of the FastAPI application.
+    This function returns the startup.py status of the FastAPI application.
 
     :return:
     """

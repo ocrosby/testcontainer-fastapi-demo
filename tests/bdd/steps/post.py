@@ -1,33 +1,12 @@
-from pytest_bdd import scenario, given, when, then, parsers
+"""
+This file contains the step definitions for the post feature.
+"""
 
-
-@scenario('../post.feature', 'Create a new post')
-def create_new_post():
-    pass
-
-
-@scenario('../post.feature', 'Retrieve all posts')
-def retrieve_all_posts():
-    pass
-
-
-@scenario('../post.feature', 'Retrieve a post by ID')
-def retrieve_post_by_id():
-    pass
-
-
-@scenario('../post.feature', 'Update a post by ID')
-def update_post_by_id():
-    pass
-
-
-@scenario('../post.feature', 'Delete a post by ID')
-def delete_post_by_id():
-    pass
+from pytest_bdd import given, when, then, parsers
 
 
 @given(parsers.parse('there is a post with ID {post_id:d}'))
-def post_with_id(post_id: int):
+def set_post_id(post_id: int):
     pass
 
 
