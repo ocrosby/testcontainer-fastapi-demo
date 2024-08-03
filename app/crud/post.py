@@ -118,4 +118,4 @@ class CRUDPost:
         return cursor.rowcount > 0
 
 
-crud_post = CRUDPost()
+# crud_post = CRUDPost()

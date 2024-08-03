@@ -9,7 +9,7 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get("/liveness")
+@router.get("/liveness", tags=["kubernetes"], summary="Check the liveness status of the application")
 async def liveness():
     """
     This function returns the liveness status of the FastAPI application.

@@ -6,58 +6,58 @@ Feature: Readiness Probe
     Background:
         Given the application is running
 
-    @e2e @readiness @probe
-    Scenario: Check the readiness of the application
+    @e2e @kubernetes @liveness @probe
+    Scenario: Running
         Given the application is running
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 200
         And the response should contain the message "Application is running"
         And the response should contain the current time
 
-    @e2e @readiness @probe    
-    Scenario: Check the readiness of the application when it is not running
+    @e2e @kubernetes @liveness @probe    
+    Scenario: Not Running
         Given the application is not running
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 503
         And the response should contain the message "Application is not running"
         And the response should contain the current time
 
-    @e2e @readiness @probe
-    Scenario: Check the readiness of the application in a degraded state
+    @e2e @kubernetes @liveness @probe
+    Scenario: Degraded State
         Given the application is running in a degraded state
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 200
         And the response should contain the message "Application is running in a degraded state"
         And the response should contain the current time
 
-    @e2e @readiness @probe
-    Scenario: Check the readiness of the application under heavy load
+    @e2e @kubernetes @liveness @probe
+    Scenario: Heavy Load
         Given the application is running under heavy load
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 200
         And the response should contain the message "Application is running under heavy load"
         And the response should contain the current time
 
-    @e2e @readiness @probe
-    Scenario: Check the readiness of the application when the database is available
+    @e2e @kubernetes @liveness @probe
+    Scenario: Database Available
         Given the database is available
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 200
         And the response should contain the message "Application is running and database is available"
         And the response should contain the current time
 
-    @e2e @readiness @probe
-    Scenario: Check the readiness of the application when the database is not available
+    @e2e @kubernetes @liveness @probe
+    Scenario: Database Not Available
         Given the database is not available
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 503
         And the response should contain the message "Application is running but database is not available"
         And the response should contain the current time
 
-    @e2e @readiness @probe
-        Scenario: Check the readiness of the application when the database is in a degraded state
+    @e2e @kubernetes @liveness @probe
+    Scenario: Database Degraded State
         Given the database is in a degraded state
-        When I send a GET request to "/readiness"
+        When I send a GET request to "/health/readiness"
         Then the response status code should be 503
         And the response should contain the message "Application is running but database is in a degraded state"
         And the response should contain the current time

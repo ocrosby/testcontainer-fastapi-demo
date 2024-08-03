@@ -18,4 +18,4 @@ class Post(BaseModel):
         """
         This class is used to configure the Pydantic model.
         """
-        orm_mode = True
+        from_attributes = True

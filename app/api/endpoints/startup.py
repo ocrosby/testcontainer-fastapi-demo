@@ -10,7 +10,7 @@ from app.core.database import check_database_connection
 router = APIRouter()
 
 
-@router.get("/startup")
+@router.get("/startup", tags=["kubernetes"], summary="Check the startup status of the application")
 async def startup():
     """
     This function returns the startup.py status of the FastAPI application.

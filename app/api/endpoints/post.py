@@ -6,13 +6,17 @@ from typing import List
 
 from fastapi import APIRouter, HTTPException
 
-from app.crud.post import crud_post
+from app.crud.post import CRUDPost
 from app.models.post import Post
 
 router = APIRouter()
 
 
-@router.post("/", response_model=Post)
+@router.post(
+    path="/",
+    response_model=Post,
+    tags=["posts"]
+)
 async def create_post(post: Post):
     """
     Create a post
@@ -20,10 +24,14 @@ async def create_post(post: Post):
     :param post:
     :return:
     """
-    return crud_post.create_post(post)
+    return CRUDPost().create_post(post)
 
 
-@router.get("/{post_id}", response_model=Post)
+@router.get(
+    path="/{post_id}",
+    response_model=Post,
+    tags=["posts"]
+)
 async def read_post(post_id: int):
     """
     Get a post
@@ -31,23 +39,31 @@ async def read_post(post_id: int):
     :param post_id:
     :return:
     """
-    post = crud_post.get_post(post_id)
+    post = CRUDPost().get_post(post_id)
     if post is None:
         raise HTTPException(status_code=404, detail="Post not found")
     return post
 
 
-@router.get("/", response_model=List[Post])
+@router.get(
+    path="/",
+    response_model=List[Post],
+    tags=["posts"]
+)
 async def read_posts():
     """
     Get all posts
 
     :return:
     """
-    return crud_post.get_posts()
+    return CRUDPost().get_posts()
 
 
-@router.put("/{post_id}", response_model=Post)
+@router.put(
+    path="/{post_id}",
+    response_model=Post,
+    tags=["posts"]
+)
 async def update_post(post_id: int, post: Post):
     """
     Update a post
@@ -56,13 +72,17 @@ async def update_post(post_id: int, post: Post):
     :param post:
     :return:
     """
-    updated_post = crud_post.update_post(post_id, post)
+    updated_post = CRUDPost().update_post(post_id, post)
     if updated_post is None:
         raise HTTPException(status_code=404, detail="Post not found")
     return updated_post
 
 
-@router.delete("/{post_id}", response_model=bool)
+@router.delete(
+    path="/{post_id}",
+    response_model=bool,
+    tags=["posts"]
+)
 async def delete_post(post_id: int):
     """
     Delete a post
@@ -70,7 +90,7 @@ async def delete_post(post_id: int):
     :param post_id:
     :return:
     """
-    success = crud_post.delete_post(post_id)
+    success = CRUDPost().delete_post(post_id)
     if not success:
         raise HTTPException(status_code=404, detail="Post not found")
     return success

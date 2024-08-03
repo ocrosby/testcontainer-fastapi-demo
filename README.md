@@ -280,3 +280,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Docker Python](https://docker-py.readthedocs.io/en/stable/)
 - [Docker SDK for Python](https://docker-py.readthedocs.io/en/stable/)
+- [structlog](https://www.structlog.org/en/stable/)
+- [Testing FastAPI with TestContainers](https://samanta-reinosoa.medium.com/testing-fastapi-with-testcontainers-in-gitlab-b7c62068aeef)
+- [Pydantic Docs](https://docs.pydantic.dev/latest/)

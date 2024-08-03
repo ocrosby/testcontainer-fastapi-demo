@@ -26,7 +26,7 @@ lint:
 
 test: clean lint
 	@echo "Running Unit Tests..."
-	@pytest -m unit -v
+	@coverage run -m pytest -m unit -v
 	@echo "Done"
 
 freeze:
@@ -35,3 +35,10 @@ freeze:
 
 docker:
 	docker build -t testcontainer-fastapi-demo:latest .
+
+
+run: docker
+	@echo "Server is running on http://localhost:8000/docs"
+	docker run  -p 8080:8000 testcontainer-fastapi-demo:latest
+
+#	@echo "To stop the server, run 'docker ps' to get the container ID and then run 'docker stop <container_id>'"

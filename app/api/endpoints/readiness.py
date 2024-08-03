@@ -11,7 +11,7 @@ from app.core.database import check_database_connection
 router = APIRouter()
 
 
-@router.get("/readiness")
+@router.get("/readiness", tags=["kubernetes"], summary="Check the readiness status of the application")
 async def readiness():
     """
     This function returns the readiness status of the FastAPI application.
