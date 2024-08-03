@@ -1,7 +1,7 @@
 .PHONY: install lint freeze
 
 # Set the default task to lint
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := run
 
 
 install:

@@ -15,7 +15,7 @@ from app.core.config import settings
 # Load environment variables from .env file
 load_dotenv()
 
-app = FastAPI(
+api = FastAPI(
     title="FastAPI Demo",
     description=settings.description,
     summary=settings.summary,
@@ -26,7 +26,7 @@ app = FastAPI(
 )
 
 # Add CORS middleware if needed
-app.add_middleware(
+api.add_middleware(
     middleware_class=CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -34,12 +34,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-if not hasattr(app, 'dependency_overrides'):
-    app.dependency_overrides = {}
+if not hasattr(api, 'dependency_overrides'):
+    api.dependency_overrides = {}
 
 
 # Middleware to log requests
-@app.middleware("http")
+@api.middleware("http")
 async def log_requests(request, call_next):
     """
     Middleware to log requests
@@ -53,10 +53,10 @@ async def log_requests(request, call_next):
     logger.info(f"Response Status: {response.status_code}")
     return response
 
-app.include_router(router=setup_routes())
+api.include_router(router=setup_routes())
 
 
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host=settings.host, port=settings.port)
+    uvicorn.run(api, host=settings.host, port=settings.port)

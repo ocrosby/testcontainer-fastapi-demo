@@ -1,7 +1,9 @@
 """
 This module is responsible for reading the environment variables from the .env file.
 """
+import sys
 
+from pydantic import ValidationError
 from pydantic_settings import BaseSettings
 
 from app.config.logging import logger
@@ -15,7 +17,7 @@ class Settings(BaseSettings):
     port: int = 8000
     app_name: str = "FastAPI Demo Application"
     admin_email: str = "omar.crosby@gmail.com"
-    database_url: str
+    # database_url: str
     summary: str = "This is a demo FastAPI application"
     description: str = """
     This is a demo FastAPI application, intended to be used as a template for new projects.
@@ -35,7 +37,7 @@ class Settings(BaseSettings):
         "identifier": "MIT",
     }
 
-    tag_metadata = [
+    tag_metadata: list[dict[str, str]] = [
         {
             "name": "kubernetes",
             "description": "Operations related to Kubernetes",
@@ -70,4 +72,8 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-settings = Settings()
+try:
+    settings = Settings()
+except ValidationError as e:
+    logger.error(f"Error reading environment variables: {e}")
+    sys.exit(1)
