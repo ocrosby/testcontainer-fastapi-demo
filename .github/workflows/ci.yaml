@@ -32,3 +32,9 @@ jobs:
     - name: Run Unit Tests
       run: |
         pytest -m unit
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+          name: test-results
+          path: report/junit.xml
