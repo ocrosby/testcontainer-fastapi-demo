@@ -5,6 +5,18 @@ This module contains the configuration for the logging system.
 import logging
 import structlog
 
+
+class SafeFileHandler(logging.FileHandler):
+    def emit(self, record):
+        if self.stream and not self.stream.closed:
+            try:
+                super().emit(record)
+            except Exception:
+                self.handleError(record)
+        else:
+            logging.warning(f"Attempt to write to a closed file.")
+
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s")
 structlog.configure(
@@ -24,4 +36,7 @@ structlog.configure(
     cache_logger_on_first_use=False,
 )
 
+# Add the custom SafeFileHandler
+file_handler = SafeFileHandler("app.log")
 logger = structlog.get_logger(name="demo")
+logger.addHandler(file_handler)
