@@ -283,3 +283,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [structlog](https://www.structlog.org/en/stable/)
 - [Testing FastAPI with TestContainers](https://samanta-reinosoa.medium.com/testing-fastapi-with-testcontainers-in-gitlab-b7c62068aeef)
 - [Pydantic Docs](https://docs.pydantic.dev/latest/)
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- [Conventional Commits - Quick Summary](https://www.conventionalcommits.org/en/v1.0.0/#summary)
