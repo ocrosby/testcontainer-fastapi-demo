@@ -12,7 +12,7 @@ from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.core.container import DockerContainer
 from testcontainers.postgres import PostgresContainer
 
-from app.main import app
+from app.main import api
 
 POSTGRES_IMAGE = "postgres:12.19"
 POSTGRES_USER = "postgres"
@@ -82,14 +82,25 @@ def my_database(postgres_container: PostgresContainer):
 
 @pytest.fixture(scope="session")
 def test_client(my_database):
-    app.dependency_overrides[get_session] = lambda: my_database
-    with TestClient(app) as client:
+    """
+    Set up the test client
+
+    :param my_database:
+    :return:
+    """
+    api.dependency_overrides[get_session] = lambda: my_database
+    with TestClient(api) as client:
         yield client
-    app.dependency_overrides.clear()
+    api.dependency_overrides.clear()
 
 
 @pytest.fixture
 def app_not_running():
+    """
+    This fixture ensures the application is not running.
+
+    :return:
+    """
     # Setup code to ensure the application is not running
     yield
     # Teardown code if necessary
@@ -97,6 +108,11 @@ def app_not_running():
 
 @pytest.fixture
 def app_degraded_state():
+    """
+    This fixture ensures the application is in a degraded state.
+
+    :return:
+    """
     # Setup code to put the application in a degraded state
     yield
     # Teardown code to restore the application state
@@ -104,6 +120,11 @@ def app_degraded_state():
 
 @pytest.fixture
 def app_heavy_load():
+    """
+    This fixture ensures the application is running under heavy load.
+
+    :return:
+    """
     # Setup code to put the application under heavy load
     yield
     # Teardown code to restore the application state
@@ -111,6 +132,11 @@ def app_heavy_load():
 
 @pytest.fixture
 def db_available():
+    """
+    This fixture ensures the database is available.
+
+    :return:
+    """
     # Setup code to ensure the database is available
     yield
     # Teardown code to disconnect from the database
@@ -118,6 +144,11 @@ def db_available():
 
 @pytest.fixture
 def db_not_available():
+    """
+    This fixture puts the database in a not available state.
+
+    :return:
+    """
     # Setup code to ensure the database is not available
     yield
     # Teardown code if necessary
@@ -125,6 +156,21 @@ def db_not_available():
 
 @pytest.fixture
 def db_degraded_state():
+    """
+    This fixture puts the database in a degraded state.
+
+    :return:
+    """
     # Setup code to put the database in a degraded state
     yield
     # Teardown code to restore the database state
+
+
+@pytest.fixture
+def request_response():
+    """
+    This fixture returns a request and response object.
+
+    :return:
+    """
+    return {"request": None, "response": None}

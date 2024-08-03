@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     """
     This class is responsible for reading the environment variables from the .env file.
     """
+    version: str = "0.0.0"
     host: str = "0.0.0.0"
     port: int = 8000
     app_name: str = "FastAPI Demo Application"
@@ -54,15 +55,11 @@ class Settings(BaseSettings):
         """
         super().__init__()
 
-        version = "0.0.0"
-
         try:
             with open("VERSION", "r", encoding="utf-8") as version_file:
-                version = version_file.read().strip()
+                self.version = version_file.read().strip()
         except FileNotFoundError:
             logger.warning("VERSION file not found, using default version '0.1.0'")
-        finally:
-            self.version = version
 
     class Config:
         """

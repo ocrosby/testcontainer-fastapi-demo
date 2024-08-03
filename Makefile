@@ -38,7 +38,7 @@ docker:
 
 
 run: docker
-	@echo "Server is running on http://localhost:8000/docs"
+	@echo "Server is running on http://localhost:8080/docs"
 	docker run  -p 8080:8000 testcontainer-fastapi-demo:latest
 
 #	@echo "To stop the server, run 'docker ps' to get the container ID and then run 'docker stop <container_id>'"

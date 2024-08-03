@@ -133,15 +133,15 @@ def pytest_bdd_before_step(request, feature, scenario, step, step_func):
     :param step: Step
     :param step_func: Step function
     """
-    logger.info(
-        "Step started",
-        extra={
-            "event": "step_started",
-            "feature": feature.name,
-            "scenario": scenario.name,
-            "step": step.name,
-        },
-    )
+    # logger.info(
+    #     "Step started",
+    #     extra={
+    #         "event": "step_started",
+    #         "feature": feature.name,
+    #         "scenario": scenario.name,
+    #         "step": step.name,
+    #     },
+    # )
 
 
 def pytest_bdd_after_step(request, feature, scenario, step, step_func):
@@ -154,15 +154,15 @@ def pytest_bdd_after_step(request, feature, scenario, step, step_func):
     :param step: Step
     :param step_func: Step function
     """
-    logger.info(
-        "Step finished",
-        extra={
-            "event": "step_finished",
-            "feature": feature.name,
-            "scenario": scenario.name,
-            "step": step.name,
-        },
-    )
+    # logger.info(
+    #     "Step finished",
+    #     extra={
+    #         "event": "step_finished",
+    #         "feature": feature.name,
+    #         "scenario": scenario.name,
+    #         "step": step.name,
+    #     },
+    # )
 
 
 def pytest_bdd_step_func_lookup_error(request, feature, scenario, step, exception):

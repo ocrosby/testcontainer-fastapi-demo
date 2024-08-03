@@ -6,6 +6,8 @@ import pytest
 
 from pytest_bdd import scenario
 
+from tests.bdd.steps.common import *
+from tests.bdd.steps.liveness import *
 
 @pytest.mark.e2e
 @pytest.mark.kubernetes

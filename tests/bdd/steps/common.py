@@ -2,10 +2,13 @@
 This module contains the common steps that can be reused across different features.
 """
 
+import datetime
+
+import httpx
+
 from pytest_bdd import given, when, then, parsers
 
-# from tests.bdd.fixtures.common import app_running, app_not_running, app_degraded_state, app_heavy_load, db_available \
-#     , db_not_available, db_degraded_state
+from tests.bdd.fixtures.common import *
 
 
 class StepNotImplementedError(Exception):
@@ -84,8 +87,9 @@ def the_database_is_in_degraded_state():
     """
 
 
+
 @when(parsers.parse('I send a {method} request to "{resource}"'))
-def send_request_to_resource(method: str, resource: str):
+def send_request_to_resource(method: str, resource: str, request_response):
     """
     This step sends a request to the specified resource.
 
@@ -93,36 +97,71 @@ def send_request_to_resource(method: str, resource: str):
     :param resource:
     :return:
     """
-    raise StepNotImplementedError(f"I send a {method} request to '{resource}'")
+
+    # Use httpx to send the request
+
+    headers = {
+        "accept": "application/json",
+    }
+
+    # build the URL from the resource
+    url = f"http://localhost:8000{resource}"
+
+    # Create a request object
+    request = httpx.Request(method=method, url=url, headers=headers)
+
+    # Send the request using an httpx.Client instance
+    with httpx.Client() as client:
+        response = client.send(request)
+
+    request_response['request'] = request
+    request_response['response'] = response
 
 
-@then(parsers.parse('the response status code should be {status_code}'))
-def response_status_code_should_be(status_code: int):
+@then(parsers.parse('the response status code should be {status_code:d}'))
+def response_status_code_should_be(status_code: int, request_response):
     """
     This step checks the response status code.
 
     :param status_code:
     :return:
     """
-    raise StepNotImplementedError("the response status code should be {status_code}")
+    response = request_response['response']
+    assert response.status_code == status_code
 
 
 @then('the response should contain the current time')
-def response_should_contain_current_time():
+def response_should_contain_current_time(request_response):
     """
     This step checks if the response contains the current time.
 
     :return:
     """
-    raise StepNotImplementedError("the response should contain the current time")
+    response = request_response['response']
+    response_json = response.json()
+
+    if 'time' not in response_json:
+        raise AssertionError("Response does not contain 'time' field [1]")
+
+    response_time_str = response_json.get('time', None)
+    if response_time_str is None:
+        raise AssertionError("Response does not contain 'time' field [2]")
+
+    response_time = datetime.datetime.fromisoformat(response_time_str)
+    current_time = datetime.datetime.now(datetime.timezone.utc)
+
+    # Allow for a small difference between the current time and the response time
+    time_difference = abs((current_time - response_time).total_seconds())
+    assert time_difference < 5, f"Time difference is {time_difference} seconds"
 
 
 @then(parsers.parse('the response should contain the message "{message}"'))
-def response_should_contain_message(message: str):
+def response_should_contain_message(message: str, request_response):
     """
     This step checks if the response contains the specified message.
 
     :param message:
     :return:
     """
-    raise StepNotImplementedError(f"the response should contain the message '{message}'")
+    response = request_response['response']
+    assert message in response.text, f"Response does not contain message '{message}'"
