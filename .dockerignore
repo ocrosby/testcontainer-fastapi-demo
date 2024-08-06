@@ -8,7 +8,15 @@ venv/
 .env
 
 # Ignore test and development files
+Makefile
+example.env
+.coverage
 tests/
+scripts/
+sql/
+report/
+docs/
+.github/
 *.log
 
 # Ignore Docker-related files
