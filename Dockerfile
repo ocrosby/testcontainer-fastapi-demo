@@ -21,8 +21,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir uvicorn && \
     pip install --no-cache-dir --upgrade -r requirements.txt
 
-# Copy the rest of the application code into the container
+# Copy the rest of the required files into the container
 COPY ./app /code/app
+COPY ./LICENSE /code/LICENSE
+COPY ./VERSION /code/VERSION
 
 # Expose the port the app runs on
 EXPOSE 80
