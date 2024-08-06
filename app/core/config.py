@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     """
     version: str = "0.0.0"
     host: str = "0.0.0.0"
-    port: int = 8000
+    port: int = 80
     app_name: str = "FastAPI Demo Application"
     admin_email: str = "omar.crosby@gmail.com"
     # database_url: str

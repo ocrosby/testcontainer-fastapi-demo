@@ -3,6 +3,9 @@
 # Set the default task to lint
 .DEFAULT_GOAL := run
 
+# Define variables
+IMAGE_NAME = testcontainer-fastapi-demo
+IMAGE_TAG = latest
 
 install:
 	@echo "Upgrading pip..."
@@ -34,12 +37,15 @@ freeze:
 	@pip freeze > requirements.txt
 
 
-docker:
+build:
 	docker build -t testcontainer-fastapi-demo:latest .
 
 
-run: docker
+run: build
 	@echo "Server is running on http://localhost:8080/docs"
-	docker run  -p 8080:8000 testcontainer-fastapi-demo:latest
+	# Note: The HOST and PORT environment variables are used to set the host and port for the FastAPI server
+	# Note: The -p flag is used to map the host port to the container port
+	#       The format is -p <host_port>:<container_port>
+	docker run -e HOST=0.0.0.0 -e PORT=80 -p 8080:80 $(IMAGE_NAME):$(IMAGE_TAG)
 
 #	@echo "To stop the server, run 'docker ps' to get the container ID and then run 'docker stop <container_id>'"
