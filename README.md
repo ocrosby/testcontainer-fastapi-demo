@@ -116,6 +116,17 @@ testcontainer-fastapi-demo/
     uvicorn app.main:app --reload
     ```
 
+When you install FastAPI (e.g. with `pip install fastapi`), it includes a package
+called `fastapi-cli`, this package provides the fastapi command in the terminal.
+
+To run your FastAPI app for development, you can use the `fastapi dev` command.
+
+```shell
+fastapi dev app.main:app
+```
+
+
+
 2. Open your browser and navigate to `http://127.0.0.1:8000/docs` to see the interactive API documentation.
 
 

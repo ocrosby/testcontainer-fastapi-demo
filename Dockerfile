@@ -3,6 +3,7 @@
 # https://en.wikipedia.org/wiki/Asynchronous_Server_Gateway_Interface
 # https://gunicorn.org/
 # https://sentry.io/answers/number-of-uvicorn-workers-needed-in-production/
+# https://fastapi.tiangolo.com/deployment/server-workers/
 
 # Use the official Python image from the Docker Hub
 FROM python:3.12-alpine

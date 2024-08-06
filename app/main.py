@@ -55,8 +55,3 @@ async def log_requests(request, call_next):
 
 api.include_router(router=setup_routes())
 
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(api, host=settings.host, port=settings.port)
