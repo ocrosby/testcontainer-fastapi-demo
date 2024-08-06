@@ -14,6 +14,7 @@ install:
 
 clean:
 	@echo "Cleaning up..."
+	@rm -f *.log
 	@find . -name "junit.xml" -type f -delete
 	@find . -name "report" -type d -exec rm -rf {} +
 
