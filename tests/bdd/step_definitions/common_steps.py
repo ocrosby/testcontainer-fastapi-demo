@@ -87,7 +87,6 @@ def the_database_is_in_degraded_state():
     """
 
 
-
 @when(parsers.parse('I send a {method} request to "{resource}"'))
 def send_request_to_resource(method: str, resource: str, request_response):
     """

@@ -1,15 +1,29 @@
 """
 Post endpoints
 """
+import app.dal.posts as posts_dal
 
 from typing import List
 
 from fastapi import APIRouter, HTTPException
 
-from app.crud.post import CRUDPost
 from app.models.post import Post
+from app.config.logging import logger
 
 router = APIRouter()
+
+
+def init():
+    """
+    Initialize the posts table
+
+    :return:
+    """
+    logger.info("Initializing the posts table ...")
+    posts_dal.create_table()
+
+
+init()
 
 
 @router.post(
@@ -24,7 +38,7 @@ async def create_post(post: Post):
     :param post:
     :return:
     """
-    return CRUDPost().create_post(post)
+    return posts_dal.create_post(post.title, post.content, post.published)
 
 
 @router.get(
@@ -39,9 +53,11 @@ async def read_post(post_id: int):
     :param post_id:
     :return:
     """
-    post = CRUDPost().get_post(post_id)
-    if post is None:
+    # If the post does not exist, raise an HTTPException
+    post = posts_dal.get_post_by_id(post_id)
+    if not post:
         raise HTTPException(status_code=404, detail="Post not found")
+
     return post
 
 
@@ -56,7 +72,7 @@ async def read_posts():
 
     :return:
     """
-    return CRUDPost().get_posts()
+    return posts_dal.get_all_posts()
 
 
 @router.put(
@@ -72,10 +88,9 @@ async def update_post(post_id: int, post: Post):
     :param post:
     :return:
     """
-    updated_post = CRUDPost().update_post(post_id, post)
-    if updated_post is None:
-        raise HTTPException(status_code=404, detail="Post not found")
-    return updated_post
+    posts_dal.update_post(post_id, post.title, post.content, post.published)
+
+    return posts_dal.get_post_by_id(post_id)
 
 
 @router.delete(
@@ -90,7 +105,6 @@ async def delete_post(post_id: int):
     :param post_id:
     :return:
     """
-    success = CRUDPost().delete_post(post_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Post not found")
-    return success
+    return posts_dal.delete_post(post_id)
+
+

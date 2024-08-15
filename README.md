@@ -109,6 +109,15 @@ testcontainer-fastapi-demo/
     pip install -r requirements.txt
     ```
 
+4. Install docker-compose
+
+    ```shell
+    brew install docker-compose
+    ```
+
+The docker-compose file is used to start the PostgreSQL container for integration testing.
+
+
 ## Running the Application
 
 1. Start the FastAPI application:
@@ -297,4 +306,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Conventional Commits - Quick Summary](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 - [Full Stack FastAPI Template](https://fastapi.tiangolo.com/project-generation/)
-- 

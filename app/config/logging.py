@@ -13,8 +13,6 @@ class SafeFileHandler(logging.FileHandler):
                 super().emit(record)
             except Exception:
                 self.handleError(record)
-        else:
-            logging.warning(f"Attempt to write to a closed file.")
 
 
 # Configure logging

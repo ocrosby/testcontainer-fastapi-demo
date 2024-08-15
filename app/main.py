@@ -5,6 +5,9 @@ app instance and includes the routes from the routes file.
 
 # app/main.py
 
+import uvicorn
+
+from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +18,21 @@ from app.core.config import settings
 # Load environment variables from .env file
 load_dotenv()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Lifespan context manager
+
+    :param app:
+    :return:
+    """
+    try:
+        logger.info(f"Application starting up http://{settings.host}:{settings.port}/docs")
+        yield
+    finally:
+        logger.info("Application shutting down")
+
 api = FastAPI(
     title="FastAPI Demo",
     description=settings.description,
@@ -23,6 +41,7 @@ api = FastAPI(
     contact=settings.contact,
     license_info=settings.license_info,
     openapi_tags=settings.tag_metadata,
+    lifespan=lifespan,
 )
 
 # Add CORS middleware if needed
@@ -55,3 +74,5 @@ async def log_requests(request, call_next):
 
 api.include_router(router=setup_routes())
 
+if __name__ == "__main__":
+    uvicorn.run("app.main:api", host=settings.host, port=settings.port)

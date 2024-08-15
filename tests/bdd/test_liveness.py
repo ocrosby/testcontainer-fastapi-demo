@@ -1,20 +1,20 @@
 """
 This module contains the end to end tests for the liveness feature.
 """
-
 import pytest
 
 from pytest_bdd import scenario
 
-from tests.bdd.steps.common import *
-from tests.bdd.steps.liveness import *
+from tests.bdd.fixtures.common import *
+from tests.bdd.step_definitions.common_steps import *
+
 
 @pytest.mark.e2e
 @pytest.mark.kubernetes
 @pytest.mark.liveness
 @pytest.mark.probe
-@scenario('../../features/liveness.feature', 'Running')
-def test_liveness():
+@scenario('../features/liveness.feature', 'Running')
+def test_liveness(app_container):
     """
     This function represents the scenario 'Running'.
 
@@ -26,7 +26,7 @@ def test_liveness():
 @pytest.mark.kubernetes
 @pytest.mark.liveness
 @pytest.mark.probe
-@scenario('../../features/liveness.feature', 'Not Running')
+@scenario('../features/liveness.feature', 'Not Running')
 def test_not_running():
     """
     This function represents the scenario 'Not Running'.
@@ -39,7 +39,7 @@ def test_not_running():
 @pytest.mark.kubernetes
 @pytest.mark.liveness
 @pytest.mark.probe
-@scenario('../../features/liveness.feature', 'Degraded State')
+@scenario('../features/liveness.feature', 'Degraded State')
 def test_degraded_state():
     """
     This function represents the scenario 'Degraded State'.
@@ -52,7 +52,7 @@ def test_degraded_state():
 @pytest.mark.kubernetes
 @pytest.mark.liveness
 @pytest.mark.probe
-@scenario('../../features/liveness.feature', 'Heavy Load')
+@scenario('../features/liveness.feature', 'Heavy Load')
 def test_heavy_load():
     """
     This function represents the scenario 'Heavy Load'.

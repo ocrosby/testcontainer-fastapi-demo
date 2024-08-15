@@ -1,11 +1,11 @@
 """
 This module contains the common fixtures that can be reused across different features.
 """
+import os
 import pytest
+import docker
 
 from fastapi.testclient import TestClient
-
-from sqlmodel import Base, Session, create_engine
 
 from testcontainers.core import utils
 from testcontainers.core.waiting_utils import wait_for_logs
@@ -14,11 +14,48 @@ from testcontainers.postgres import PostgresContainer
 
 from app.main import api
 
+from pytest_bdd import scenario
+
+from app.utils.filesystem import find_root_dir
+from testcontainers.core.container import DockerContainer
+
+from tests.bdd.step_definitions.common_steps import *
+from tests.bdd.step_definitions.liveness_steps import *
+
+
 POSTGRES_IMAGE = "postgres:12.19"
 POSTGRES_USER = "postgres"
 POSTGRES_PASSWORD = "test_password"
 POSTGRES_DATABASE = "test_database"
 POSTGRES_CONTAINER_PORT = 5432
+
+
+@pytest.fixture(scope="module", autouse=True)
+def app_container():
+    # Create a container from the Dockerfile at the root of the project
+    # Start the container
+
+    root_dir = find_root_dir(__file__)  # Find the root directory of the project
+
+    dockerfile_path = os.path.join(root_dir, "Dockerfile")  # Path to the Dockerfile
+
+    # Use the Docker SDK to build the image
+    client = docker.from_env()
+    image, _ = client.images.build(path=root_dir, dockerfile=dockerfile_path, tag="demo-fastapi:latest")
+
+    # Run the container using testcontainers
+    container = DockerContainer(image.id)
+
+    container.with_exposed_ports(80)  # Expose the necessary ports
+
+    # Start the container
+    container.start()
+
+    # Yield the container for use in tests
+    yield container
+
+    # Stop the container
+    container.stop()
 
 
 def get_session():
@@ -60,38 +97,6 @@ def postgress_container() -> PostgresContainer:
             interval=0.1,  # interval between checks (in seconds)
         )
         yield postgres
-
-
-@pytest.fixture(scope="session")
-def my_database(postgres_container: PostgresContainer):
-    """
-    Set up the database connection
-    :param postgres_container:
-    :return:
-    """
-    if utils.is_windows():
-        postgres_container.get_container_host_ip = lambda: "localhost"
-
-    url = postgres_container.get_connection_url()
-    engine = create_engine(url, echo=False, future=False)
-    Base.metadata.create_all(engine)
-    initialize_test_db(engine)
-    with Session(engine) as session:
-        yield session
-
-
-@pytest.fixture(scope="session")
-def test_client(my_database):
-    """
-    Set up the test client
-
-    :param my_database:
-    :return:
-    """
-    api.dependency_overrides[get_session] = lambda: my_database
-    with TestClient(api) as client:
-        yield client
-    api.dependency_overrides.clear()
 
 
 @pytest.fixture

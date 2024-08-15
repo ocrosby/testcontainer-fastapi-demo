@@ -5,7 +5,7 @@ This module contains the step definitions for the post feature.
 from pytest_bdd import scenario
 
 
-@scenario('../../features/post.feature', 'Create a new post')
+@scenario('../features/post.feature', 'Create a new post')
 def test_create_new_post():
     """
     This function represents the scenario 'Create a new post'.
@@ -14,7 +14,7 @@ def test_create_new_post():
     """
 
 
-@scenario('../../features/post.feature', 'Retrieve all posts')
+@scenario('../features/post.feature', 'Retrieve all posts')
 def test_retrieve_all_posts():
     """
     This function represents the scenario 'Retrieve all posts'.
@@ -23,7 +23,7 @@ def test_retrieve_all_posts():
     """
 
 
-@scenario('../../features/post.feature', 'Retrieve a post by ID')
+@scenario('../features/post.feature', 'Retrieve a post by ID')
 def test_retrieve_post_by_id():
     """
     This function represents the scenario 'Retrieve a post by ID'.
@@ -32,7 +32,7 @@ def test_retrieve_post_by_id():
     """
 
 
-@scenario('../../features/post.feature', 'Update a post by ID')
+@scenario('../features/post.feature', 'Update a post by ID')
 def test_update_post_by_id():
     """
     This function represents the scenario 'Update a post by ID'.
@@ -41,7 +41,7 @@ def test_update_post_by_id():
     """
 
 
-@scenario('../../features/post.feature', 'Delete a post by ID')
+@scenario('../features/post.feature', 'Delete a post by ID')
 def test_delete_post_by_id():
     """
     This function represents the scenario 'Delete a post by ID'.
