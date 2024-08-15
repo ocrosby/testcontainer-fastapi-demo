@@ -25,6 +25,12 @@ clean:
 	@rm -f *.log
 	@find . -name "junit.xml" -type f -delete
 	@find . -name "report" -type d -exec rm -rf {} +
+	@find . -name "__pycache__" -type d -exec rm -rf {} +
+	@find . -name "*.pyc" -type f -delete
+	@find . -name "*.pyo" -type f -delete
+	@find . -name "*.pyd" -type f -delete
+	@find . -name "*.pyz" -type f -delete
+	@find . -name "app.log" -type f -delete
 
 lint:
 	@echo "Running linters..."

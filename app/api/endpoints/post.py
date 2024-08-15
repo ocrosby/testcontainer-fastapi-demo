@@ -8,7 +8,7 @@ from typing import List
 from fastapi import Request, APIRouter, HTTPException
 
 from app.models.post import Post
-from app.config.logging import logger
+from core.logging import logger
 
 router = APIRouter()
 

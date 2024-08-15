@@ -7,7 +7,7 @@ import os
 import pytest
 
 from testcontainers.postgres import PostgresContainer
-from app.config.logging import logger
+from core.logging import logger
 from app.core.reporting import beautify_junit_xml
 
 # Pytest Hooks

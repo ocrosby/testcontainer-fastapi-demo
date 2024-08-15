@@ -6,7 +6,7 @@ import sys
 from pydantic import ValidationError
 from pydantic_settings import BaseSettings
 
-from app.config.logging import logger
+from core.logging import logger
 
 
 class Settings(BaseSettings):

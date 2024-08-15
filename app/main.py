@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import setup_routes
-from app.config.logging import logger
+from core.logging import logger
 from app.core.config import settings
 
 # Load environment variables from .env file

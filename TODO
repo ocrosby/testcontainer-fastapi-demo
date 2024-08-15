@@ -1,2 +1,0 @@
-Issue: fastapi-cli problem
-    Fix `fastapi dev app/main.py` so that it doesn't error on startup.
