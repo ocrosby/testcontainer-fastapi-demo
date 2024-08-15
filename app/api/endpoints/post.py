@@ -5,7 +5,7 @@ import app.dal.posts as posts_dal
 
 from typing import List
 
-from fastapi import APIRouter, HTTPException
+from fastapi import Request, APIRouter, HTTPException
 
 from app.models.post import Post
 from app.config.logging import logger
@@ -31,15 +31,22 @@ init()
     response_model=Post,
     tags=["posts"]
 )
-async def create_post(post: Post):
+async def create_post(request: Request, post: Post):
     """
     Create a post
 
-    :param post:
+    :param request: the request
+    :param post: the post
     :return:
     """
     try:
+        if not isinstance(post, Post):
+            raise HTTPException(status_code=400, detail="Invalid post")
+
         return posts_dal.create_post(post.title, post.content, post.published)
+    except HTTPException as e:
+        logger.error(f"Error creating post: {e}")
+        raise e
     except Exception as e:
         logger.error(f"Error creating post: {e}")
         raise HTTPException(status_code=500, detail="Error creating post")
