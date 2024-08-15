@@ -1,12 +1,14 @@
 """
 This module is responsible for reading the environment variables from the .env file.
 """
+import os
 import sys
 
 from pydantic import ValidationError
 from pydantic_settings import BaseSettings
 
 from core.logging import logger
+from app.utils.filesystem import find_root_dir
 
 
 class Settings(BaseSettings):
@@ -71,11 +73,12 @@ class Settings(BaseSettings):
         This class is responsible for reading the environment variables
         from the .env file.
         """
-        env_file = ".env"
+        env_file = os.path.join(find_root_dir(__file__), '.env')
 
 
 try:
     settings = Settings()
 except ValidationError as e:
+    logger.error(f'The current directory is: {os.getcwd()}')
     logger.error(f"Error reading environment variables: {e}")
     sys.exit(1)

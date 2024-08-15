@@ -1,6 +1,8 @@
 """
 This file contains the database connection and session creation.
 """
+import os
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from psycopg2 import OperationalError
@@ -43,6 +45,12 @@ def get_db_connection():
 
     :return: database connection
     """
+    settings.db_name = os.environ.get("DB_NAME", settings.db_name)
+    settings.db_username = os.environ.get("DB_USERNAME", settings.db_username)
+    settings.db_password = os.environ.get("DB_PASSWORD", settings.db_password)
+    settings.db_host = os.environ.get("DB_HOST", settings.db_host)
+    settings.db_port = os.environ.get("DB_PORT", settings.db_port)
+
     logger.info("Creating database connection")
     logger.info(f"DB_NAME: {settings.db_name}")
     logger.info(f"DB_USERNAME: {settings.db_username}")
