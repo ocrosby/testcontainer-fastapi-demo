@@ -38,7 +38,11 @@ async def create_post(post: Post):
     :param post:
     :return:
     """
-    return posts_dal.create_post(post.title, post.content, post.published)
+    try:
+        return posts_dal.create_post(post.title, post.content, post.published)
+    except Exception as e:
+        logger.error(f"Error creating post: {e}")
+        raise HTTPException(status_code=500, detail="Error creating post")
 
 
 @router.get(
@@ -54,11 +58,15 @@ async def read_post(post_id: int):
     :return:
     """
     # If the post does not exist, raise an HTTPException
-    post = posts_dal.get_post_by_id(post_id)
-    if not post:
-        raise HTTPException(status_code=404, detail="Post not found")
+    try:
+        post = posts_dal.get_post_by_id(post_id)
+        if not post:
+            raise HTTPException(status_code=404, detail="Post not found")
 
-    return post
+        return post
+    except Exception as e:
+        logger.error(f"Error getting post: {e}")
+        raise HTTPException(status_code=500, detail="Error getting post")
 
 
 @router.get(
@@ -72,7 +80,11 @@ async def read_posts():
 
     :return:
     """
-    return posts_dal.get_all_posts()
+    try:
+        return posts_dal.get_all_posts()
+    except Exception as e:
+        logger.error(f"Error getting posts: {e}")
+        raise HTTPException(status_code=500, detail="Error getting posts")
 
 
 @router.put(
@@ -88,9 +100,13 @@ async def update_post(post_id: int, post: Post):
     :param post:
     :return:
     """
-    posts_dal.update_post(post_id, post.title, post.content, post.published)
+    try:
+        posts_dal.update_post(post_id, post.title, post.content, post.published)
 
-    return posts_dal.get_post_by_id(post_id)
+        return posts_dal.get_post_by_id(post_id)
+    except Exception as e:
+        logger.error(f"Error updating post: {e}")
+        raise HTTPException(status_code=500, detail="Error updating post")
 
 
 @router.delete(
@@ -105,6 +121,10 @@ async def delete_post(post_id: int):
     :param post_id:
     :return:
     """
-    return posts_dal.delete_post(post_id)
+    try:
+        return posts_dal.delete_post(post_id)
+    except Exception as e:
+        logger.error(f"Error deleting post: {e}")
+        raise HTTPException(status_code=500, detail="Error deleting post")
 
 

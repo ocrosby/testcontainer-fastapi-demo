@@ -14,6 +14,11 @@ install:
 	@echo "Installing dependencies..."
 	@pip install -r requirements.txt
 
+	@echo "Checking if .env file exists..."
+	@if [ ! -f .env ]; then \
+	 echo "Copying example.env to .env..."; \
+	 cp example.env .env; \
+	fi
 
 clean:
 	@echo "Cleaning up..."
