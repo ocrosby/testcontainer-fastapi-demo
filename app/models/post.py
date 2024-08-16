@@ -3,23 +3,31 @@ This module contains the Post model.
 """
 
 from typing import Optional
-from pydantic import BaseModel
+from sqlalchemy import String, Integer, Boolean, UniqueConstraint, Index
+from sqlalchemy.orm import Mapped, mapped_column
+from app.models.base import Base
 
 
-class Post(BaseModel):
+class Post(Base):
     """
     Post model
     """
-    id: Optional[int]
-    title: str
-    content: str
-    published: bool
+    __tablename__ = "posts"
 
-    class Config:
-        """
-        This class is used to configure the Pydantic model.
-        """
-        from_attributes = True
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String(200))
+    content: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    published: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    def __str__(self):
-        return f"Post(id={self.id}, title={self.title}, content={self.content})"
+    __table_args__ = (
+        UniqueConstraint("title", name="unique_post_title"),
+        Index("idx_post_title", "title"),
+    )
+
+    def __repr__(self):
+        """
+        Return a string representation of the Post model
+
+        :return:
+        """
+        return f"Post(id={self.id!r}, title={self.title!r}, content={self.content!r}, published={self.published!r})"
