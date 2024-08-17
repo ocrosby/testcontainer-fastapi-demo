@@ -13,6 +13,7 @@ class Base(DeclarativeBase):
     Base class for all models
     """
     __abstract__ = True
+
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC))
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(UTC), onupdate=datetime.now(UTC))
     deleted_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
