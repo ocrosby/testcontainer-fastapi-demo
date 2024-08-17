@@ -17,7 +17,6 @@ from app.main import api
 from pytest_bdd import scenario
 
 from app.utils.filesystem import find_root_dir
-from testcontainers.core.container import DockerContainer
 
 from tests.bdd.step_definitions.common_steps import *
 from tests.bdd.step_definitions.liveness_steps import *

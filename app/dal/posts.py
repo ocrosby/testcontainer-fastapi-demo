@@ -53,7 +53,6 @@ def create_post(title: str, content: str, published: bool):
         raise DatabaseError(f"Error creating post: {e}")
 
 
-
 def get_all_posts() -> list[Post]:
     """
     Get all posts
@@ -184,6 +183,3 @@ def delete_all_posts():
                 conn.commit()
     except Exception as e:
         raise DatabaseError(f"Error deleting posts: {e}")
-
-
-

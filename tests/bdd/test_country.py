@@ -1,5 +1,6 @@
 from pytest_bdd import scenario
 
+
 @scenario('../features/country.feature', 'Retrieve a list of countries')
 def test_retrieve_a_list_of_countries():
     pass

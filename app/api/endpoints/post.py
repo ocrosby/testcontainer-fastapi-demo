@@ -133,5 +133,3 @@ async def delete_post(post_id: int):
     except Exception as e:
         logger.error(f"Error deleting post: {e}")
         raise HTTPException(status_code=500, detail="Error deleting post")
-
-

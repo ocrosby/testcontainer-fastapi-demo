@@ -4,9 +4,10 @@ import pytest
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.models.base import Base  # Ensure this imports the Base class from your models
 from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.postgres import PostgresContainer
+
+from app.models.base import Base  # Ensure this imports the Base class from your models
 
 POSTGRES_IMAGE = "postgres:16-alpine"
 POSTGRES_USER = "postgres"

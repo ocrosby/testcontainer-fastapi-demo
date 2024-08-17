@@ -7,7 +7,7 @@ import sys
 from pydantic import ValidationError
 from pydantic_settings import BaseSettings
 
-from core.logging import logger
+from app.core.logging import logger
 from app.utils.filesystem import find_root_dir
 
 
