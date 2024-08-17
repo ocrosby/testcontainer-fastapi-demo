@@ -39,6 +39,8 @@ def postgres_container():
         os.environ["DB_PASSWORD"] = postgres.POSTGRES_PASSWORD
         os.environ["DB_NAME"] = postgres.POSTGRES_DB
 
+        print(os.environ["DB_CONN"])
+
         wait_for_logs(
             container=postgres,
             predicate="database system is ready to accept connections",
