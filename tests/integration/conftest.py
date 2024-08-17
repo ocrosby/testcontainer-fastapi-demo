@@ -61,7 +61,7 @@ def db(postgres_container):
     :param postgres_container: Postgres container
     :return: Database
     """
-    engine = create_engine(os.environ["DB_CONN"])
+    engine = create_engine(os.environ["DB_CONN"], echo=True)
     Base.metadata.create_all(engine)  # Create the database structure
     session_factory = sessionmaker(bind=engine)
     session_instance = session_factory()
