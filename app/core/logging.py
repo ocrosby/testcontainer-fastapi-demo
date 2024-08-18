@@ -11,7 +11,7 @@ class SafeFileHandler(logging.FileHandler):
         if self.stream and not self.stream.closed:
             try:
                 super().emit(record)
-            except Exception:
+            except NotImplementedError:
                 self.handleError(record)
 
 

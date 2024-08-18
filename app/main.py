@@ -5,15 +5,18 @@ app instance and includes the routes from the routes file.
 
 # app/main.py
 
+from contextlib import asynccontextmanager
+
 import uvicorn
 
-from contextlib import asynccontextmanager
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.routes import setup_routes
-from core.logging import logger
 from app.core.config import settings
+from app.core.logging import logger
 
 # Load environment variables from .env file
 load_dotenv()

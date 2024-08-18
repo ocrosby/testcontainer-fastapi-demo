@@ -8,8 +8,6 @@ import httpx
 
 from pytest_bdd import given, when, then, parsers
 
-from tests.bdd.fixtures.common import *
-
 
 class StepNotImplementedError(Exception):
     def __init__(self, step_name):

@@ -14,7 +14,7 @@ def setup_database_with_countries():
 
 @when('I send a GET request to "/countries"')
 def send_get_request_to_countries():
-    response = requests.get(BASE_URL)
+    response = requests.get(BASE_URL, timeout=5)
     return response
 
 
@@ -37,7 +37,7 @@ def setup_database_with_country():
 
 @when('I send a GET request to "/countries/1"')
 def send_get_request_to_country():
-    response = requests.get(f"{BASE_URL}/1")
+    response = requests.get(f"{BASE_URL}/1", timeout=5)
     return response
 
 
@@ -50,7 +50,7 @@ def check_response_contains_country(response):
 @when('I send a POST request to "/countries" with the following data')
 def send_post_request_to_countries():
     data = {"name": "Mexico"}
-    response = requests.post(BASE_URL, json=data)
+    response = requests.post(BASE_URL, json=data, timeout=5)
     return response
 
 
@@ -68,13 +68,8 @@ def check_response_contains_new_country(response):
 @when('I send a PUT request to "/countries/1" with the following data')
 def send_put_request_to_country():
     data = {"name": "United States"}
-    response = requests.put(f"{BASE_URL}/1", json=data)
+    response = requests.put(f"{BASE_URL}/1", json=data, timeout=5)
     return response
-
-
-@then('the response status code should be 200')
-def check_status_code_200(response):
-    assert response.status_code == 200
 
 
 @then('the response should contain the following country')
@@ -85,7 +80,7 @@ def check_response_contains_updated_country(response):
 
 @when('I send a DELETE request to "/countries/1"')
 def send_delete_request_to_country():
-    response = requests.delete(f"{BASE_URL}/1")
+    response = requests.delete(f"{BASE_URL}/1", timeout=5)
     return response
 
 

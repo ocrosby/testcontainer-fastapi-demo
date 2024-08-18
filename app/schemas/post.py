@@ -9,9 +9,9 @@ class PostBase(BaseModel):
     """
     Post base
     """
-    userId: int
     title: str
-    body: str
+    content: str
+    published: bool
 
 
 class PostCreate(PostBase):
@@ -26,14 +26,8 @@ class PostUpdate(PostBase):
     """
 
 
-class Post(PostBase):
-    """
-    Post model
-    """
+class PostResponse(PostBase):
     id: int
 
     class Config:
-        """
-        Config
-        """
-        from_attributes = True
+        orm_mode = True

@@ -1,135 +1,126 @@
 """
 Post endpoints
 """
-import app.dal.posts as posts_dal
-
 from typing import List
 
-from fastapi import Request, APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, status
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.models.post import Post
-from core.logging import logger
+from app.schemas.post import PostCreate, PostResponse
+from app.db.connection import get_db
 
 router = APIRouter()
 
 
-def init():
-    """
-    Initialize the posts table
-
-    :return:
-    """
-    logger.info("Initializing the posts table ...")
-    posts_dal.create_table()
-
-
-init()
-
-
 @router.post(
     path="/",
-    response_model=Post,
+    response_model=PostCreate,
     tags=["posts"]
 )
-async def create_post(request: Request, post: Post):
+async def create_post(post: PostCreate, db: Session = Depends(get_db)):
     """
     Create a post
 
-    :param request: the request
     :param post: the post
+    :param db: the database session
     :return:
     """
     try:
-        if not isinstance(post, Post):
-            raise HTTPException(status_code=400, detail="Invalid post")
+        # Create a new post instance
+        db_post = Post(title=post.title, content=post.content, published=post.published)
 
-        return posts_dal.create_post(post.title, post.content, post.published)
-    except HTTPException as e:
-        logger.error(f"Error creating post: {e}")
-        raise e
-    except Exception as e:
-        logger.error(f"Error creating post: {e}")
-        raise HTTPException(status_code=500, detail="Error creating post")
+        # Add the post to the database
+        db.add(db_post)
+        db.commit()
+        db.refresh(db_post)
+
+        return db_post
+    except SQLAlchemyError as e:
+        # Rollback the transaction
+        db.rollback()
+
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@router.get(
-    path="/{post_id}",
-    response_model=Post,
-    tags=["posts"]
-)
-async def read_post(post_id: int):
-    """
-    Get a post
-
-    :param post_id:
-    :return:
-    """
-    # If the post does not exist, raise an HTTPException
+# Get a specific post by ID
+@router.get(path="/posts/{post_id}", response_model=PostResponse, tags=["posts"])
+def read_post(post_id: int, db: Session = Depends(get_db)):
     try:
-        post = posts_dal.get_post_by_id(post_id)
-        if not post:
-            raise HTTPException(status_code=404, detail="Post not found")
-
+        post = db.query(Post).filter(Post.id == post_id).first()
+        if post is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
         return post
-    except Exception as e:
-        logger.error(f"Error getting post: {e}")
-        raise HTTPException(status_code=500, detail="Error getting post")
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@router.get(
-    path="/",
-    response_model=List[Post],
-    tags=["posts"]
-)
-async def read_posts():
+# Get all posts
+@router.get(path="/", response_model=List[PostResponse], tags=["posts"])
+def read_posts(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     """
     Get all posts
 
-    :return:
+    :param skip: the number of posts to skip
+    :param limit: the number of posts to return
+    :param db: the database session
+    :return: the list of posts
     """
     try:
-        return posts_dal.get_all_posts()
-    except Exception as e:
-        logger.error(f"Error getting posts: {e}")
-        raise HTTPException(status_code=500, detail="Error getting posts")
+        posts = db.query(Post).offset(skip).limit(limit).all()
+        return posts
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@router.put(
-    path="/{post_id}",
-    response_model=Post,
-    tags=["posts"]
-)
-async def update_post(post_id: int, post: Post):
+# Update a post
+@router.put("/posts/{post_id}", response_model=PostResponse, tags=["posts"])
+def update_post(post_id: int, post: PostCreate, db: Session = Depends(get_db)):
     """
     Update a post
 
-    :param post_id:
-    :param post:
-    :return:
+    :param post_id: the post ID
+    :param post: the post
+    :param db: the database session
+    :return: the updated post
     """
     try:
-        posts_dal.update_post(post_id, post.title, post.content, post.published)
+        db_post = db.query(Post).filter(Post.id == post_id).first()
+        if db_post is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
 
-        return posts_dal.get_post_by_id(post_id)
-    except Exception as e:
-        logger.error(f"Error updating post: {e}")
-        raise HTTPException(status_code=500, detail="Error updating post")
+        for key, value in post.dict().items():
+            setattr(db_post, key, value)
+
+        db.commit()
+        db.refresh(db_post)
+
+        return db_post
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
-@router.delete(
-    path="/{post_id}",
-    response_model=bool,
-    tags=["posts"]
-)
-async def delete_post(post_id: int):
+# Delete a post
+@router.delete("/posts/{post_id}", response_model=PostResponse, tags=["posts"])
+def delete_post(post_id: int, db: Session = Depends(get_db)):
     """
     Delete a post
 
-    :param post_id:
-    :return:
+    :param post_id: the post ID
+    :param db: the database session
+    :return: the deleted post
     """
     try:
-        return posts_dal.delete_post(post_id)
-    except Exception as e:
-        logger.error(f"Error deleting post: {e}")
-        raise HTTPException(status_code=500, detail="Error deleting post")
+        db_post = db.query(Post).filter(Post.id == post_id).first()
+        if db_post is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
+
+        db.delete(db_post)
+        db.commit()
+
+        return db_post
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

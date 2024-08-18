@@ -1,13 +1,16 @@
 import os
-
 import pytest
+import docker
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.postgres import PostgresContainer
+from testcontainers.core.container import DockerContainer
 
 from app.models.base import Base  # Ensure this imports the Base class from your models
+
+from app.utils.filesystem import find_root_dir
 
 POSTGRES_IMAGE = "postgres:16-alpine"
 POSTGRES_USER = "postgres"
@@ -49,7 +52,7 @@ def postgres_container():
 
         yield postgres
 
-    # postgres.stop()
+    postgres.stop()
 
 
 @pytest.fixture(scope="session")
@@ -69,3 +72,43 @@ def db(postgres_container):
 
     session_instance.close()
     engine.dispose()
+
+
+@pytest.fixture(scope="session")
+def api_container(db):
+    """
+    This fixture sets up the FastAPI application using TestContainers with a custom Dockerfile.
+    """
+    # Find the root directory of the project
+    root_dir = find_root_dir(__file__)
+
+    # Get the path to the Dockerfile
+    dockerfile_path = os.path.join(root_dir, "Dockerfile")
+
+    # Use the Docker SDK to build the image
+    client = docker.from_env()
+    image, _ = client.images.build(path=root_dir, dockerfile=dockerfile_path, tag="demo-fastapi:latest")
+
+    # Get the exposed port from the 'PORT' environment variable
+    exposed_port = os.environ.get("PORT", 8000)
+
+    # Run the container using testcontainers
+    api = DockerContainer(image.id)
+    api.with_env("DB_CONN", os.environ["DB_CONN"])
+    api.with_exposed_ports(exposed_port)  # Expose the necessary ports
+
+    # Start the container
+    with api:
+        api.start()
+        wait_for_logs(
+            container=api,
+            predicate="Uvicorn running on",
+            timeout=30,
+            interval=0.5,
+        )
+
+        # Yield the container for use in tests
+        yield api
+
+    # Stop the container
+    api.stop()

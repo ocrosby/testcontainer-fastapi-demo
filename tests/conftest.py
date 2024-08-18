@@ -4,7 +4,7 @@ This module contains the Pytest configuration.
 
 import os
 
-from core.logging import logger
+from app.core.logging import logger
 from app.core.reporting import beautify_junit_xml
 
 # Pytest Hooks

@@ -5,21 +5,11 @@ import os
 import pytest
 import docker
 
-from fastapi.testclient import TestClient
-
-from testcontainers.core import utils
 from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.core.container import DockerContainer
 from testcontainers.postgres import PostgresContainer
 
-from app.main import api
-
-from pytest_bdd import scenario
-
-from app.utils.filesystem import find_root_dir
-
-from tests.bdd.step_definitions.common_steps import *
-from tests.bdd.step_definitions.liveness_steps import *
+from tests.bdd.fixtures.testcontainers import db
 
 
 POSTGRES_IMAGE = "postgres:12.19"
@@ -27,42 +17,6 @@ POSTGRES_USER = "postgres"
 POSTGRES_PASSWORD = "test_password"
 POSTGRES_DATABASE = "test_database"
 POSTGRES_CONTAINER_PORT = 5432
-
-
-@pytest.fixture(scope="module", autouse=True)
-def app_container():
-    # Create a container from the Dockerfile at the root of the project
-    # Start the container
-
-    root_dir = find_root_dir(__file__)  # Find the root directory of the project
-
-    dockerfile_path = os.path.join(root_dir, "Dockerfile")  # Path to the Dockerfile
-
-    # Use the Docker SDK to build the image
-    client = docker.from_env()
-    image, _ = client.images.build(path=root_dir, dockerfile=dockerfile_path, tag="demo-fastapi:latest")
-
-    # Run the container using testcontainers
-    container = DockerContainer(image.id)
-
-    container.with_exposed_ports(80)  # Expose the necessary ports
-
-    # Start the container
-    container.start()
-
-    # Yield the container for use in tests
-    yield container
-
-    # Stop the container
-    container.stop()
-
-
-def get_session():
-    pass
-
-
-def initialize_test_db(engine):
-    pass
 
 
 @pytest.fixture
@@ -74,28 +28,28 @@ def app_running(scope="session"):
     container.with_dockerfile("Dockerfile")
 
 
-@pytest.fixture(scope="session")
-def postgress_container() -> PostgresContainer:
-    """
-    Set up the Postgres container
-    :return:
-    """
-    postgres = PostgresContainer(
-        image=POSTGRES_IMAGE,
-        user=POSTGRES_USER,
-        password=POSTGRES_PASSWORD,
-        dbname=POSTGRES_DATABASE,
-        port=POSTGRES_CONTAINER_PORT,
-    )
-
-    with postgres:
-        wait_for_logs(
-            postgres,
-            r"UTC \[1\]: LOG:  database system is ready to accept",
-            timeout=5,  # number of seconds to wait for the predicate to be fulfilled
-            interval=0.1,  # interval between checks (in seconds)
-        )
-        yield postgres
+# @pytest.fixture(scope="session")
+# def postgress_container() -> PostgresContainer:
+#     """
+#     Set up the Postgres container
+#     :return:
+#     """
+#     postgres = PostgresContainer(
+#         image=POSTGRES_IMAGE,
+#         user=POSTGRES_USER,
+#         password=POSTGRES_PASSWORD,
+#         dbname=POSTGRES_DATABASE,
+#         port=POSTGRES_CONTAINER_PORT,
+#     )
+#
+#     with postgres:
+#         wait_for_logs(
+#             postgres,
+#             r"UTC \[1\]: LOG:  database system is ready to accept",
+#             timeout=5,  # number of seconds to wait for the predicate to be fulfilled
+#             interval=0.1,  # interval between checks (in seconds)
+#         )
+#         yield postgres
 
 
 @pytest.fixture

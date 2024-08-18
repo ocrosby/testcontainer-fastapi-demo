@@ -7,7 +7,7 @@ from pytest_bdd import scenario
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Running')
+@scenario('../../features/readiness.feature', 'Running')
 def running():
     """
     This function represents the scenario 'Running'.
@@ -21,7 +21,7 @@ def running():
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Not Running')
+@scenario('../../features/readiness.feature', 'Not Running')
 def not_running():
     """
     This function represents the scenario 'Not Running'.
@@ -35,7 +35,7 @@ def not_running():
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Degraded State')
+@scenario('../../features/readiness.feature', 'Degraded State')
 def degraded_state():
     """
     This function represents the scenario 'Degraded State'.
@@ -49,7 +49,7 @@ def degraded_state():
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Heavy Load')
+@scenario('../../features/readiness.feature', 'Heavy Load')
 def heavy_load():
     """
     This function represents the scenario 'Heavy Load'.
@@ -63,7 +63,7 @@ def heavy_load():
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Database Available')
+@scenario('../../features/readiness.feature', 'Database Available')
 def database_available():
     """
     This function represents the scenario 'Database Available'.
@@ -77,7 +77,7 @@ def database_available():
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Database Not Available')
+@scenario('../../features/readiness.feature', 'Database Not Available')
 def database_not_available():
     """
     This function represents the scenario 'Database Not Available'.
@@ -91,7 +91,7 @@ def database_not_available():
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @pytest.mark.probe
-@scenario('../features/readiness.feature', 'Database Degraded State')
+@scenario('../../features/readiness.feature', 'Database Degraded State')
 def database_degraded_state():
     """
     This function represents the scenario 'Database Degraded State'.

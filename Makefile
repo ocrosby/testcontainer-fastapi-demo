@@ -7,12 +7,16 @@
 IMAGE_NAME = testcontainer-fastapi-demo
 IMAGE_TAG = latest
 
+venv:
+	@echo "Creating virtual environment..."
+	@python3 -m venv .venv
+
 install:
 	@echo "Upgrading pip..."
-	@pip install --upgrade pip
+	@python3 -m pip install --upgrade pip
 
 	@echo "Installing dependencies..."
-	@pip install -r requirements.txt
+	@python3 -m pip install -r requirements.txt
 
 	@echo "Checking if .env file exists..."
 	@if [ ! -f .env ]; then \
