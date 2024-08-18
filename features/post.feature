@@ -6,11 +6,15 @@ Feature: Post Management
   @e2e @post @create
   Scenario: Create a new post
     Given I have a post payload with title "My First Post" and content "This is the content of my first post"
-    When I send a POST request to "/posts"
+    When I send a POST request to "/posts" with body
+      | title     | My First Post                        |
+      | content   | some cool content                    |
+      | published | true                                 |
     Then the response status code should be 201
     And the response should contain the post ID
     And the response should contain the title "My First Post"
     And the response should contain the content "This is the content of my first post"
+    And the response should indicate the post is published
 
   @e2e @post @read
   Scenario: Retrieve all posts

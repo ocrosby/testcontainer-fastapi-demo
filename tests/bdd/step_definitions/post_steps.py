@@ -1,6 +1,7 @@
 """
 This file contains the step definitions for the post feature.
 """
+import requests
 
 from pytest_bdd import given, when, then, parsers
 
@@ -23,6 +24,18 @@ def set_post_payload_with_title_and_content(title: str, content: str):
 @when(parsers.parse('I send a {method} request to "{resource}"'))
 def send_request_to_resource(method: str, resource: str):
     pass
+
+
+@when(parsers.parse('I send a {method} request to "{resource}" with body\n{body}'))
+def send_request_to_resource_with_body(method: str, resource: str, body: str):
+    # Parse the table into a dictionary
+    body_dict = {}
+    for line in body.split('\n'):
+        key, value = line.split('|')[1:3]
+        body_dict[key.strip()] = value.strip()
+
+    response = requests.post(url, json=body_dict)
+    return response
 
 
 @then(parsers.parse('the response should contain the post ID {post_id}'))

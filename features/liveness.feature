@@ -3,7 +3,7 @@ Feature: Liveness
     I want to check the liveness of the application
     So that I can know if the application is running
 
-    @e2e @kubernetes @liveness @probe
+    @e2e @kubernetes @liveness
     Scenario: Running
         When I send a GET request to "/health/liveness"
         Then the response status code should be 200

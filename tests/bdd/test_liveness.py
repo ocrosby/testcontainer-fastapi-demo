@@ -12,7 +12,6 @@ from tests.bdd.step_definitions.common_steps import *
 @pytest.mark.e2e
 @pytest.mark.kubernetes
 @pytest.mark.liveness
-@pytest.mark.probe
 @scenario('../../features/liveness.feature', 'Running')
 def test_liveness(api_container):
     """
