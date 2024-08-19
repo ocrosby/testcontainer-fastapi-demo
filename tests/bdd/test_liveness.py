@@ -5,7 +5,7 @@ import pytest
 
 from pytest_bdd import scenario
 
-from tests.bdd.fixtures.testcontainers import api_container
+from tests.bdd.fixtures.testcontainers import *
 from tests.bdd.step_definitions.common_steps import *
 
 

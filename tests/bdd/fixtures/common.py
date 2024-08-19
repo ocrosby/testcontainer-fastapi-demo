@@ -9,7 +9,7 @@ from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.core.container import DockerContainer
 from testcontainers.postgres import PostgresContainer
 
-from tests.bdd.fixtures.testcontainers import db
+from tests.bdd.fixtures.testcontainers import database
 
 
 POSTGRES_IMAGE = "postgres:12.19"

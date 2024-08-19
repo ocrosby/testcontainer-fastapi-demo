@@ -47,7 +47,7 @@ def postgres_container():
             container=postgres,
             predicate="database system is ready to accept connections",
             timeout=30,
-            interval=0.5,
+            interval=2,
         )
 
         yield postgres
@@ -56,7 +56,7 @@ def postgres_container():
 
 
 @pytest.fixture(scope="session")
-def db(postgres_container):
+def database(postgres_container):
     """
     Set up the database
 
@@ -75,7 +75,7 @@ def db(postgres_container):
 
 
 @pytest.fixture(scope="session")
-def api_container(db):
+def api_container(database):
     """
     This fixture sets up the FastAPI application using TestContainers with a custom Dockerfile.
     """
@@ -102,9 +102,9 @@ def api_container(db):
         api.start()
         wait_for_logs(
             container=api,
-            predicate="Uvicorn running on",
+            predicate=r"Uvicorn running on",
             timeout=30,
-            interval=0.5,
+            interval=2,
         )
 
         # Yield the container for use in tests
