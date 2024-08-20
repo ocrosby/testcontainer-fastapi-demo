@@ -51,16 +51,17 @@ def postgres_container(request):
             interval=0.2,
         )
 
-        # Log the port the container is running on
-        port = postgres.get_exposed_port(5432)
-        logger.info(f"Postgres container is running on port: {port}")
-        logger.info(f'Connection String: {os.environ["DB_CONN"]}')
+    # Log the port the container is running on
+    logger.info(f"Postgres container is running on port: {os.environ["DB_PORT"]}")
+    logger.info(f'Connection String: {os.environ["DB_CONN"]}')
 
-        engine = create_engine(os.environ["DB_CONN"])
-        Base.metadata.create_all(engine)  # Create the database structure
-        session_factory = sessionmaker(bind=engine)
-        session_instance = session_factory()
+    engine = create_engine(os.environ["DB_CONN"])
 
+    # This is where the error is occurring
+    Base.metadata.create_all(engine)  # Create the database structure
+
+    session_factory = sessionmaker(bind=engine)
+    session_instance = session_factory()
 
     def cleanup():
         session_instance.close()
