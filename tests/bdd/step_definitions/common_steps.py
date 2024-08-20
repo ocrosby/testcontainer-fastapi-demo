@@ -1,13 +1,16 @@
 """
 This module contains the common steps that can be reused across different features.
 """
-
+import os
 import datetime
 
-import httpx
+import requests
 
 from pytest_bdd import given, when, then, parsers
 
+from app.core.logging import logger
+
+from tests.bdd.fixtures.common import context
 
 class StepNotImplementedError(Exception):
     def __init__(self, step_name):
@@ -86,7 +89,7 @@ def the_database_is_in_degraded_state():
 
 
 @when(parsers.parse('I send a {method} request to "{resource}"'))
-def send_request_to_resource(method: str, resource: str, request_response):
+def send_request_to_resource(method: str, resource: str, context, api_container):
     """
     This step sends a request to the specified resource.
 
@@ -102,39 +105,63 @@ def send_request_to_resource(method: str, resource: str, request_response):
     }
 
     # build the URL from the resource
-    url = f"http://localhost:8000{resource}"
+    host = api_container["host"]
+    port = api_container["port"]
+
+    if host is None:
+        raise ValueError("Environment variable 'HOST' is not set")
+
+    if port is None:
+        raise ValueError("Environment variable 'PORT' is not set")
+
+    url = f"http://{host}:{port}{resource}"
+
+    logger.info(f"Sending {method} request to '{url}' ...")
 
     # Create a request object
-    request = httpx.Request(method=method, url=url, headers=headers)
+    request = requests.Request(method=method, url=url, headers=headers)
 
-    # Send the request using an httpx.Client instance
-    with httpx.Client() as client:
-        response = client.send(request)
+    # Prepare the request using a session
+    with requests.Session() as session:
+        prepared_request = session.prepare_request(request)
+        context['request'] = prepared_request
 
-    request_response['request'] = request
-    request_response['response'] = response
+        try:
+            # Send the request
+            response = session.send(prepared_request)
+            context['response'] = response
+        except requests.exceptions.RequestException as e:
+            context['errors'].append(e)
+
 
 
 @then(parsers.parse('the response status code should be {status_code:d}'))
-def response_status_code_should_be(status_code: int, request_response):
+def response_status_code_should_be(status_code: int, context):
     """
     This step checks the response status code.
 
     :param status_code:
     :return:
     """
-    response = request_response['response']
-    assert response.status_code == status_code
+    response = context['response']
+    assert response.status_code == status_code, f"Expected status code {status_code}, but got {response.status_code}"
+
+
+@then('there should be no errors')
+def no_errors(context):
+    errors = context['errors']
+    error_count = len(errors)
+    assert error_count == 0, f"Errors occurred: {errors}"
 
 
 @then('the response should contain the current time')
-def response_should_contain_current_time(request_response):
+def response_should_contain_current_time(context):
     """
     This step checks if the response contains the current time.
 
     :return:
     """
-    response = request_response['response']
+    response = context['response']
     response_json = response.json()
 
     if 'time' not in response_json:
@@ -153,12 +180,12 @@ def response_should_contain_current_time(request_response):
 
 
 @then(parsers.parse('the response should contain the message "{message}"'))
-def response_should_contain_message(message: str, request_response):
+def response_should_contain_message(message: str, context):
     """
     This step checks if the response contains the specified message.
 
     :param message:
     :return:
     """
-    response = request_response['response']
+    response = context['response']
     assert message in response.text, f"Response does not contain message '{message}'"

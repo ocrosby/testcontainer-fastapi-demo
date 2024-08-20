@@ -27,8 +27,11 @@ COPY ./app /code/app
 COPY ./LICENSE /code/LICENSE
 COPY ./VERSION /code/VERSION
 
+# the find_root_dir function needs this file
+COPY setup.py /code/setup.py
+
 # Expose the port the app runs on
 EXPOSE 80
 
 # Command to run the application using environment variables with shell form
-CMD uvicorn app.main:api --host $HOST --port $PORT
+CMD uvicorn app.main:api --host 0.0.0.0 --port 80

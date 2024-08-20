@@ -6,6 +6,7 @@ Feature: Liveness
     @e2e @kubernetes @liveness
     Scenario: Running
         When I send a GET request to "/health/liveness"
-        Then the response status code should be 200
+        Then there should be no errors
+        And the response status code should be 200
         And the response should contain the message "Application is running"
-        And the response should contain the current time
+

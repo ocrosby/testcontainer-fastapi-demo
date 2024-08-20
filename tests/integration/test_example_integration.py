@@ -2,7 +2,6 @@ import pytest
 
 from app.db.tools import table_exists
 from app.core.database import check_database_connection
-from tests.bdd.fixtures.testcontainers import database
 
 
 @pytest.mark.integration

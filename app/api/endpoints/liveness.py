@@ -16,4 +16,4 @@ async def liveness():
 
     :return:
     """
-    return {"status": "alive"}
+    return {"status": "Application is running"}

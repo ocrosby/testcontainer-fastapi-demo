@@ -4,11 +4,9 @@ app instance and includes the routes from the routes file.
 """
 
 # app/main.py
+import os
 
 from contextlib import asynccontextmanager
-
-import uvicorn
-
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -78,4 +76,13 @@ async def log_requests(request, call_next):
 api.include_router(router=setup_routes())
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:api", host=settings.host, port=settings.port)
+    import uvicorn
+
+    app_string = "app.main:api"
+    host_string = "0.0.0.0"
+    port_string = os.environ.get("PORT", 80)
+    port = int(port_string)
+
+    logger.info(f"Starting server on {host_string}:{port}")
+
+    uvicorn.run(app=app_string, host=host_string, port=port)

@@ -2,15 +2,16 @@ import pytest
 
 from pytest_bdd import scenario
 
+from tests.bdd.step_definitions.common_steps import *
+
 
 @pytest.mark.e2e
 @pytest.mark.kubernetes
 @pytest.mark.readiness
 @scenario('../../features/readiness.feature', 'Running')
-def running():
+def test_readiness():
     """
     This function represents the scenario 'Running'.
 
     :return:
     """
-    raise NotImplementedError("The scenario 'Running' has not been implemented")

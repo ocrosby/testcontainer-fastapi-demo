@@ -4,8 +4,11 @@ This module contains the Pytest configuration.
 
 import os
 
+from dotenv import load_dotenv
+
 from app.core.logging import logger
 from app.core.reporting import beautify_junit_xml
+from app.utils.filesystem import find_root_dir
 
 # Pytest Hooks
 
@@ -18,6 +21,12 @@ def pytest_configure(config):
     """
     logger.info("Configuring Pytest")
     logger.info("Test suite started", extra={"event": "startup", "status": "success"})
+
+    root_dir = find_root_dir(__file__)
+    os.environ["ROOT_DIR"] = root_dir
+    env_path = os.path.join(root_dir, ".env")
+
+    load_dotenv(dotenv_path=env_path)  # Load environment variables from .env file
 
 
 def pytest_sessionfinish(session, exitstatus):

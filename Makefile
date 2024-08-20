@@ -35,6 +35,8 @@ clean:
 	@find . -name "*.pyd" -type f -delete
 	@find . -name "*.pyz" -type f -delete
 	@find . -name "app.log" -type f -delete
+	@docker image prune -a -f
+	@docker container prune -f
 
 lint:
 	@echo "Running linters..."
@@ -62,6 +64,6 @@ build:
 
 run: build
 	@echo "Server is running on http://localhost:8080/docs"
-	docker run -e HOST=0.0.0.0 -e PORT=80 -p 8080:80 $(IMAGE_NAME):$(IMAGE_TAG)
+	docker run -e HOST=0.0.0.0 -e PORT=8080 -p 8080:80 $(IMAGE_NAME):$(IMAGE_TAG)
 
 #	@echo "To stop the server, run 'docker ps' to get the container ID and then run 'docker stop <container_id>'"
