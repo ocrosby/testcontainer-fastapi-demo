@@ -55,7 +55,8 @@ freeze:
 
 
 build:
-	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --quiet .
+	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
+	# docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --quiet .
 
 
 # Note: The HOST and PORT environment variables are used to set the host and port for the FastAPI server

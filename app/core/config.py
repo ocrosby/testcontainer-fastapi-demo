@@ -20,11 +20,11 @@ class Settings(BaseSettings):
     port: int
     app_name: str = "FastAPI Demo Application"
     admin_email: str = "omar.crosby@gmail.com"
-    db_name: str
-    db_username: str
-    db_password: str
-    db_host: str
-    db_port: int
+    # db_name: str
+    # db_username: str
+    # db_password: str
+    # db_host: str
+    # db_port: int
     # database_url: str
     summary: str = "This is a demo FastAPI application"
     description: str = """

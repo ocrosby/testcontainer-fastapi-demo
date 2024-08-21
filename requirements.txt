@@ -16,6 +16,7 @@ flake8==7.1.0
 h11==0.14.0
 httpcore==1.0.5
 httptools==0.6.1
+httpx==0.27.0
 idna==3.7
 iniconfig==2.0.0
 isort==5.13.2
@@ -55,7 +56,7 @@ SQLAlchemy==2.0.31
 sqlmodel==0.0.21
 starlette==0.37.2
 structlog==24.4.0
-testcontainers==4.7.2
+testcontainers==4.8.0
 testcontainers-core==0.0.1rc1
 testcontainers-postgres==0.0.1rc1
 tomlkit==0.13.0
