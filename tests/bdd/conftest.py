@@ -14,7 +14,7 @@ from app.models.base import Base  # Ensure this imports the Base class from your
 from app.core.logging import logger
 from app.utils.filesystem import find_root_dir
 
-POSTGRES_IMAGE = "postgres:16-alpine"
+POSTGRES_IMAGE = "postgres:latest"
 POSTGRES_USER = "postgres"
 POSTGRES_PASSWORD = "test_password"
 POSTGRES_DATABASE = "test_database"
@@ -35,22 +35,23 @@ def postgres_container(request):
         password=POSTGRES_PASSWORD,
         dbname=POSTGRES_DATABASE,
         port=POSTGRES_CONTAINER_PORT
+    ).with_name(POSTGRES_CONTAINER_NAME).with_volume_mapping("./logs", "/var/lib/postgresql/data/logs")
+
+    postgres.start()
+
+    os.environ["DB_CONN"] = postgres.get_connection_url()
+    os.environ["DB_HOST"] = postgres.get_container_host_ip()
+    os.environ["DB_PORT"] = postgres.get_exposed_port(5432)
+    os.environ["DB_USERNAME"] = postgres.POSTGRES_USER
+    os.environ["DB_PASSWORD"] = postgres.POSTGRES_PASSWORD
+    os.environ["DB_NAME"] = postgres.POSTGRES_DB
+
+    wait_for_logs(
+        container=postgres,
+        predicate="database system is ready to accept connections",
+        timeout=10,
+        interval=1,
     )
-
-    with postgres:
-        os.environ["DB_CONN"] = postgres.get_connection_url()
-        os.environ["DB_HOST"] = postgres.get_container_host_ip()
-        os.environ["DB_PORT"] = postgres.get_exposed_port(5432)
-        os.environ["DB_USERNAME"] = postgres.POSTGRES_USER
-        os.environ["DB_PASSWORD"] = postgres.POSTGRES_PASSWORD
-        os.environ["DB_NAME"] = postgres.POSTGRES_DB
-
-        wait_for_logs(
-            container=postgres,
-            predicate="database system is ready to accept connections",
-            timeout=5,
-            interval=1,
-        )
 
     # Log the port the container is running on
     logger.info(f"Postgres container is running on port: {os.environ["DB_PORT"]}")
@@ -64,7 +65,7 @@ def postgres_container(request):
         # This is where the error is occurring
         Base.metadata.create_all(engine)  # Create the database structure
 
-        session_factory = sessionmaker(bind=engine)
+        session_factory = sessionmaker(autocommit=False, autoflish=False, bind=engine)
         session_instance = session_factory()
     except SQLAlchemyError as e:
         logger.error(f"Error creating the database: {e}")
