@@ -3,6 +3,7 @@ import pytest
 import docker
 
 from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.postgres import PostgresContainer
@@ -55,18 +56,28 @@ def postgres_container(request):
     logger.info(f"Postgres container is running on port: {os.environ["DB_PORT"]}")
     logger.info(f'Connection String: {os.environ["DB_CONN"]}')
 
-    engine = create_engine(os.environ["DB_CONN"])
+    connection_string = os.environ["DB_CONN"]
 
-    # This is where the error is occurring
-    Base.metadata.create_all(engine)  # Create the database structure
+    try:
+        engine = create_engine(connection_string)
 
-    session_factory = sessionmaker(bind=engine)
-    session_instance = session_factory()
+        # This is where the error is occurring
+        Base.metadata.create_all(engine)  # Create the database structure
+
+        session_factory = sessionmaker(bind=engine)
+        session_instance = session_factory()
+    except SQLAlchemyError as e:
+        logger.error(f"Error creating the database: {e}")
 
     def cleanup():
-        session_instance.close()
-        engine.dispose()
-        postgres.stop()
+        if session_instance:
+            session_instance.close()
+
+        if engine:
+            engine.dispose()
+
+        if postgres:
+            postgres.stop()
 
     request.addfinalizer(cleanup)
 

@@ -19,9 +19,6 @@ def pytest_configure(config):
 
     :param config: Pytest configuration
     """
-    logger.info("Configuring Pytest")
-    logger.info("Test suite started", extra={"event": "startup", "status": "success"})
-
     root_dir = find_root_dir(__file__)
     os.environ["ROOT_DIR"] = root_dir
     env_path = os.path.join(root_dir, ".env")
@@ -40,20 +37,22 @@ def pytest_sessionfinish(session, exitstatus):
     logger.info("Shutting down Pytest")
 
     junit_xml_path = session.config.option.xmlpath
-    if junit_xml_path is not None:
-        if junit_xml_path and os.path.exists(junit_xml_path):
-            logger.info(f"Beautifying Junit XML '{junit_xml_path}'", extra={"event": "junit_xml"})
-            with open(junit_xml_path, "r", encoding="utf-8") as file:
-                xml_content = file.read()
-
-            beautified_xml = beautify_junit_xml(xml_content, indent=4)
-
-            with open(junit_xml_path, "w", encoding="utf-8") as file:
-                file.write(beautified_xml)
-        else:
-            logger.warning(f"Junit XML not found '{junit_xml_path}'", extra={"event": "junit_xml", "status": "warning"})
-    else:
+    if junit_xml_path is None:
         logger.warning("Junit XML path not provided", extra={"event": "junit_xml", "status": "warning"})
+        return
+
+    if not os.path.exists(junit_xml_path):
+        logger.warning(f"Junit XML not found '{junit_xml_path}'", extra={"event": "junit_xml", "status": "warning"})
+        return
+
+    logger.info(f"Beautifying Junit XML '{junit_xml_path}'", extra={"event": "junit_xml"})
+    with open(junit_xml_path, "r", encoding="utf-8") as file:
+        xml_content = file.read()
+
+    beautified_xml = beautify_junit_xml(xml_content, indent=4)
+
+    with open(junit_xml_path, "w", encoding="utf-8") as file:
+        file.write(beautified_xml)
 
 
 # Pytest-BDD Hooks
