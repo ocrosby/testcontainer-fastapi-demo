@@ -42,7 +42,7 @@ def pytest_sessionfinish(session, exitstatus):
     junit_xml_path = session.config.option.xmlpath
     if junit_xml_path is not None:
         if junit_xml_path and os.path.exists(junit_xml_path):
-            logger.info(f"Beautifying Junit XML '{junit_xml_path}'", extra={"event": "junit_xml", "status": "starting"})
+            logger.info(f"Beautifying Junit XML '{junit_xml_path}'", extra={"event": "junit_xml"})
             with open(junit_xml_path, "r", encoding="utf-8") as file:
                 xml_content = file.read()
 
@@ -50,8 +50,6 @@ def pytest_sessionfinish(session, exitstatus):
 
             with open(junit_xml_path, "w", encoding="utf-8") as file:
                 file.write(beautified_xml)
-
-            logger.info(f"Beautifying Junit XML '{junit_xml_path}'", extra={"event": "junit_xml", "status": "success"})
         else:
             logger.warning(f"Junit XML not found '{junit_xml_path}'", extra={"event": "junit_xml", "status": "warning"})
     else:

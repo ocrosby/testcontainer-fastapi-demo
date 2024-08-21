@@ -47,8 +47,8 @@ def postgres_container(request):
         wait_for_logs(
             container=postgres,
             predicate="database system is ready to accept connections",
-            timeout=15,
-            interval=0.2,
+            timeout=5,
+            interval=1,
         )
 
     # Log the port the container is running on
@@ -130,8 +130,8 @@ def api_container(request, postgres_container):
         wait_for_logs(
             container=api,
             predicate=r"Uvicorn running on",
-            timeout=15,
-            interval=0.2,
+            timeout=5,
+            interval=1,
         )
 
         # Retrieve the dynamically assigned external port
