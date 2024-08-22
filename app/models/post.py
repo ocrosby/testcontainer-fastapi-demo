@@ -6,9 +6,16 @@ from typing import Optional
 from sqlalchemy import String, Integer, Boolean, UniqueConstraint, Index
 from sqlalchemy.orm import Mapped, mapped_column
 from app.models.base import Base
+from pydantic import BaseModel
+
+class Post(BaseModel):
+    id: int
+    name: str
+    content: Optional[str]
+    published: bool
 
 
-class Post(Base):
+class DBPost(Base):
     """
     Post model
     """

@@ -1,6 +1,7 @@
 """
 Post schemas
 """
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -14,16 +15,22 @@ class PostBase(BaseModel):
     published: bool
 
 
-class PostCreate(PostBase):
+class PostCreate(BaseModel):
     """
     Post create
     """
+    title: str
+    content: Optional[str]
+    published: Optional[bool]
 
 
-class PostUpdate(PostBase):
+class PostUpdate(BaseModel):
     """
     Post update
     """
+    title: Optional[str]
+    content: Optional[str]
+    published: Optional[bool]
 
 
 class PostResponse(PostBase):

@@ -306,3 +306,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Conventional Commits - Quick Summary](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 - [Full Stack FastAPI Template](https://fastapi.tiangolo.com/project-generation/)
+- [Testing FastAPI](https://github.com/ArjanCodes/examples/blob/main/2023/apitesting/main.py)
+- [Diagnosing Problems](https://arjian.codes/diagnosis)
