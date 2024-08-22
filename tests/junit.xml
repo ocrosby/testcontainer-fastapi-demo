@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<testsuites>
+    <testsuite name="pytest" errors="1" failures="1" skipped="0" tests="1" time="48.386" timestamp="2024-08-22T00:57:20.989571-04:00" hostname="Omars-Mac-Studio.local">
+        <testcase classname="tests.bdd.test_liveness" name="test_liveness" time="46.892">
+            <failure message="AssertionError: Errors occurred: [ConnectionError(MaxRetryError(&quot;HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /health/liveness (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x114061790&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))&quot;))]">fixturefunc = &lt;function no_errors at 0x1046be020&gt;
+request = &lt;FixtureRequest for &lt;Function test_liveness&gt;&gt;
+kwargs = {'context': {'errors': [ConnectionError(MaxRetryError(&quot;HTTPConnectionPool(host='localhost', port=8080): Max retries ex...stablish a new connection: [Errno 61] Connection refused'))&quot;))], 'request': &lt;PreparedRequest [GET]&gt;, 'response': None}}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -&gt; FixtureValue:
+        if is_generator(fixturefunc):
+            fixturefunc = cast(
+                Callable[..., Generator[FixtureValue, None, None]], fixturefunc
+            )
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f&quot;{request.fixturename} did not yield a value&quot;) from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+&gt;           fixture_result = fixturefunc(**kwargs)
+
+../.venv/lib/python3.12/site-packages/_pytest/fixtures.py:897: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+context = {'errors': [ConnectionError(MaxRetryError(&quot;HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with ...establish a new connection: [Errno 61] Connection refused'))&quot;))], 'request': &lt;PreparedRequest [GET]&gt;, 'response': None}
+
+    @then('there should be no errors')
+    def no_errors(context):
+        errors = context['errors']
+        error_count = len(errors)
+&gt;       assert error_count == 0, f&quot;Errors occurred: {errors}&quot;
+E       AssertionError: Errors occurred: [ConnectionError(MaxRetryError(&quot;HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /health/liveness (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x114061790&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))&quot;))]
+
+bdd/step_definitions/common_steps.py:154: AssertionError</failure>
+        </testcase>
+        <testcase classname="tests.bdd.test_liveness" name="test_liveness" time="1.283">
+            <error message="failed on teardown with &quot;docker.errors.NotFound: 404 Client Error for http+docker://localhost/v1.46/containers/6c8c43c6b8bd1b8320da4d3eed58b2a180971ee70662f13053ba41fcc6971411?v=True&amp;link=False&amp;force=True: Not Found (&quot;No such container: 6c8c43c6b8bd1b8320da4d3eed58b2a180971ee70662f13053ba41fcc6971411&quot;)&quot;">self = &lt;docker.api.client.APIClient object at 0x1046b7d40&gt;
+response = &lt;Response [404]&gt;
+
+    def _raise_for_status(self, response):
+        &quot;&quot;&quot;Raises stored :class:`APIError`, if one occurred.&quot;&quot;&quot;
+        try:
+&gt;           response.raise_for_status()
+
+../.venv/lib/python3.12/site-packages/docker/api/client.py:275: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;Response [404]&gt;
+
+    def raise_for_status(self):
+        &quot;&quot;&quot;Raises :class:`HTTPError`, if one occurred.&quot;&quot;&quot;
+    
+        http_error_msg = &quot;&quot;
+        if isinstance(self.reason, bytes):
+            # We attempt to decode utf-8 first because some servers
+            # choose to localize their reason strings. If the string
+            # isn't utf-8, we fall back to iso-8859-1 for all other
+            # encodings. (See PR #3538)
+            try:
+                reason = self.reason.decode(&quot;utf-8&quot;)
+            except UnicodeDecodeError:
+                reason = self.reason.decode(&quot;iso-8859-1&quot;)
+        else:
+            reason = self.reason
+    
+        if 400 &lt;= self.status_code &lt; 500:
+            http_error_msg = (
+                f&quot;{self.status_code} Client Error: {reason} for url: {self.url}&quot;
+            )
+    
+        elif 500 &lt;= self.status_code &lt; 600:
+            http_error_msg = (
+                f&quot;{self.status_code} Server Error: {reason} for url: {self.url}&quot;
+            )
+    
+        if http_error_msg:
+&gt;           raise HTTPError(http_error_msg, response=self)
+E           requests.exceptions.HTTPError: 404 Client Error: Not Found for url: http+docker://localhost/v1.46/containers/6c8c43c6b8bd1b8320da4d3eed58b2a180971ee70662f13053ba41fcc6971411?v=True&amp;link=False&amp;force=True
+
+../.venv/lib/python3.12/site-packages/requests/models.py:1024: HTTPError
+
+The above exception was the direct cause of the following exception:
+
+    def cleanup():
+        if session_instance:
+            session_instance.close()
+    
+        if engine:
+            engine.dispose()
+    
+        if postgres:
+&gt;           postgres.stop()
+
+bdd/conftest.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv/lib/python3.12/site-packages/testcontainers/core/container.py:74: in stop
+    self.get_wrapped_container().remove(force=force, v=delete_volume)
+../.venv/lib/python3.12/site-packages/docker/models/containers.py:367: in remove
+    return self.client.api.remove_container(self.id, **kwargs)
+../.venv/lib/python3.12/site-packages/docker/utils/decorators.py:19: in wrapped
+    return f(self, resource_id, *args, **kwargs)
+../.venv/lib/python3.12/site-packages/docker/api/container.py:1037: in remove_container
+    self._raise_for_status(res)
+../.venv/lib/python3.12/site-packages/docker/api/client.py:277: in _raise_for_status
+    raise create_api_error_from_http_exception(e) from e
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+e = HTTPError('404 Client Error: Not Found for url: http+docker://localhost/v1.46/containers/6c8c43c6b8bd1b8320da4d3eed58b2a180971ee70662f13053ba41fcc6971411?v=True&amp;link=False&amp;force=True')
+
+    def create_api_error_from_http_exception(e):
+        &quot;&quot;&quot;
+        Create a suitable APIError from requests.exceptions.HTTPError.
+        &quot;&quot;&quot;
+        response = e.response
+        try:
+            explanation = response.json()['message']
+        except ValueError:
+            explanation = (response.text or '').strip()
+        cls = APIError
+        if response.status_code == 404:
+            explanation_msg = (explanation or '').lower()
+            if any(fragment in explanation_msg
+                   for fragment in _image_not_found_explanation_fragments):
+                cls = ImageNotFound
+            else:
+                cls = NotFound
+&gt;       raise cls(e, response=response, explanation=explanation) from e
+E       docker.errors.NotFound: 404 Client Error for http+docker://localhost/v1.46/containers/6c8c43c6b8bd1b8320da4d3eed58b2a180971ee70662f13053ba41fcc6971411?v=True&amp;link=False&amp;force=True: Not Found (&quot;No such container: 6c8c43c6b8bd1b8320da4d3eed58b2a180971ee70662f13053ba41fcc6971411&quot;)
+
+../.venv/lib/python3.12/site-packages/docker/errors.py:39: NotFound</error>
+        </testcase>
+    </testsuite>
+</testsuites>

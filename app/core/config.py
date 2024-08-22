@@ -16,16 +16,9 @@ class Settings(BaseSettings):
     This class is responsible for reading the environment variables from the .env file.
     """
     version: str = "0.0.0"
-    host: str
-    port: int
+    root_dir: str = find_root_dir(__file__)
     app_name: str = "FastAPI Demo Application"
     admin_email: str = "omar.crosby@gmail.com"
-    # db_name: str
-    # db_username: str
-    # db_password: str
-    # db_host: str
-    # db_port: int
-    # database_url: str
     summary: str = "This is a demo FastAPI application"
     description: str = """
     This is a demo FastAPI application, intended to be used as a template for new projects.

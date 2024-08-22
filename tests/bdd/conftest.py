@@ -114,37 +114,31 @@ def api_container(request, postgres_container):
         for log in logs:
             logger.info(log)
 
-        with DockerContainer(str(image)) as container:
+        image_string = image.id
+        with DockerContainer(image_string) as container:
             container.with_env("DB_CONN", connection_string)
-            container.with_env("DB_NAME", os.environ["DB_NAME"])
-            container.with_env("DB_USERNAME", os.environ["DB_USERNAME"])
-            container.with_env("DB_PASSWORD", os.environ["DB_PASSWORD"])
-            container.with_env("DB_HOST", os.environ["DB_HOST"])
-            container.with_env("DB_PORT", os.environ["DB_PORT"])
-            container.with_env("HOST", os.environ["HOST"])
-            container.with_env("PORT", "80")
             container.with_exposed_ports(80)
+            container.with_bind_ports(8080, 80)
 
             wait_for_logs(
                 container=container,
-                predicate=r"Uvicorn running on",
+                predicate="Uvicorn running on",
                 timeout=30,
                 interval=1,
             )
 
-            exposed_port = container.get_exposed_port(80)
-            logger.info(f"Exposed port: {exposed_port}")
-
-            return {
-                "host": "localhost",
-                "port": exposed_port,
-            }
+            # exposed_port = container.get_exposed_port(80)
+            # logger.info(f"Exposed port: {exposed_port}")
     except Exception as err:
         logger.error(str(err))
 
     def cleanup():
         # teardown code
-        pass
+        logger.info("Cleaning up the API container")
 
     request.addfinalizer(cleanup)
 
+    return {
+        "host": "localhost",
+        "port": "8080",
+    }

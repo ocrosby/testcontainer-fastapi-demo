@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     :return:
     """
     try:
-        logger.info(f"Application starting up http://{settings.host}:{settings.port}/docs")
+        logger.info(f"Application starting up")
         yield
     finally:
         logger.info("Application shutting down")
