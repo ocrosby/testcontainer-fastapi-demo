@@ -45,6 +45,13 @@ as well as [Pytest-BDD](https://pytest-bdd.readthedocs.io/en/latest/) for behavi
 - Docker
 - Docker Compose
 
+
+Installing fastapi and all dependencies
+
+```shell
+pip install fastapi[all]
+```
+
 ## Project Structure
 
 ```text
