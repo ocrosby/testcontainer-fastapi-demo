@@ -308,3 +308,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [Full Stack FastAPI Template](https://fastapi.tiangolo.com/project-generation/)
 - [Testing FastAPI](https://github.com/ArjanCodes/examples/blob/main/2023/apitesting/main.py)
 - [Diagnosing Problems](https://arjian.codes/diagnosis)
+- [Mastering API Testing with FastAPI: Databases, Dependencies, and More!](https://www.youtube.com/watch?v=9gC3Ot0LoUQ)
