@@ -310,3 +310,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [Diagnosing Problems](https://arjian.codes/diagnosis)
 - [Mastering API Testing with FastAPI: Databases, Dependencies, and More!](https://www.youtube.com/watch?v=9gC3Ot0LoUQ)
 - [How to Use FastAPI][https://www.youtube.com/watch?v=SORiTsvnU28]
+- [Design Guide](https://arjan.codes/designguide)
