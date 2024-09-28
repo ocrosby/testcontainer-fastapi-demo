@@ -1,0 +1,44 @@
+name: Syntax Analysis
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'app/**'
+      - 'tests/**'
+      - 'setup.py'
+      - '.github/workflows/lint.yaml'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'app/**'
+      - 'tests/**'
+      - 'setup.py'
+      - '.github/workflows/lint.yaml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install pylint flake8
+
+    - name: Run flake8 Analysis
+      run: flake8 .
+
+    - name: Run pylint Analysis
+      run: pylint --rcfile=setup.cfg $(shell find . -name "*.py" -not -path "./.venv/*")
