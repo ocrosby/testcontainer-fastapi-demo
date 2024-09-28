@@ -37,8 +37,8 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        python3 -m pip install pylint flake8
         python3 -m pip install -r requirements.txt
+        python3 -m pip install -r requirements-dev.txt
 
     - name: Run flake8 Analysis
       run: flake8 .
