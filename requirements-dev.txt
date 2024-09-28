@@ -1,3 +1,5 @@
 pytest
+pytest-bdd
+testcontainers
 flake8
 pylint

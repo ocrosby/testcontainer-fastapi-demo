@@ -8,3 +8,4 @@ structlog
 psycopg2-binary
 uvicorn
 python-dotenv
+requests
