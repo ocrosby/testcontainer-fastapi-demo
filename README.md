@@ -309,6 +309,17 @@ is built on top of SQLAlchemy and Pydantic, so it provides a nice way to define 
 your database.  I like the idea of using SQLModel because it allows you to define your database models using Python
 type hints, which makes it easier to work with your database models in your code.  It also provides a nice way to
 
+## Semantic Release
+
+In order to get Semantic Release working initially I needed to create an initial Tag.
+
+```shell
+git tag v0.0.0
+git push origin v0.0.0
+```
+
+This allowed semantic-release to identify the starting point for versioning.
+
 
 ## License
 
