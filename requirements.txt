@@ -4,6 +4,7 @@ sqlmodel
 fastapi
 sqlalchemy
 pydantic
+pydantic-settings
 structlog
 psycopg2-binary
 uvicorn
