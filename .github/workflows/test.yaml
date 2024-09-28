@@ -7,7 +7,6 @@ on:
     paths:
       - 'app/**'
       - 'tests/**'
-      - 'setup.py'
       - '.github/workflows/test.yaml'
   pull_request:
     branches:
@@ -15,7 +14,6 @@ on:
     paths:
       - 'app/**'
       - 'tests/**'
-      - 'setup.py'
       - '.github/workflows/test.yaml'
   workflow_dispatch:
 
