@@ -113,8 +113,18 @@ testcontainer-fastapi-demo/
 
 3. Install the dependencies:
     ```sh
-    pip install -r requirements.txt
+    # Install the project dependencies 
+    pip install .
+   
+    # Install the development dependencies
+    pip install '.[dev]'
+   
+    # or
+    pip install ".[dev]" 
     ```
+    
+    These commands will read the depndencies specified in the pyproject.tom file and install them accordingly.  
+ 
 
 4. Install docker-compose
 
@@ -326,3 +336,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - [Mastering API Testing with FastAPI: Databases, Dependencies, and More!](https://www.youtube.com/watch?v=9gC3Ot0LoUQ)
 - [How to Use FastAPI][https://www.youtube.com/watch?v=SORiTsvnU28]
 - [Design Guide](https://arjan.codes/designguide)
+- [Python Semantic Release Documentation](https://python-semantic-release.readthedocs.io/en/latest/)
+- [Angular Style Commits](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits)
