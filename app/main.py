@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
     :return:
     """
     try:
-        logger.info(f"Application starting up")
+        logger.info("Application starting up")
         yield
     finally:
         logger.info("Application shutting down")
@@ -78,11 +78,11 @@ api.include_router(router=setup_routes())
 if __name__ == "__main__":
     import uvicorn
 
-    app_string = "app.main:api"
-    host_string = "0.0.0.0"
+    APP_STRING = "app.main:api"
+    HOST_STRING = "0.0.0.0"
     port_string = os.environ.get("PORT", 80)
     port = int(port_string)
 
-    logger.info(f"Starting server on {host_string}:{port}")
+    logger.info(f"Starting server on {HOST_STRING}:{port}")
 
-    uvicorn.run(app=app_string, host=host_string, port=port)
+    uvicorn.run(app=APP_STRING, host=HOST_STRING, port=port)

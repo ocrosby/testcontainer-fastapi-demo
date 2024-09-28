@@ -4,12 +4,12 @@ import docker
 from docker.errors import APIError
 
 from sqlalchemy import create_engine
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError, OperationalError
 from sqlalchemy.orm import sessionmaker
 from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.postgres import PostgresContainer
 from testcontainers.core.container import DockerContainer
-from testcontainers.core.image import DockerImage
+
 
 from app.models.base import Base  # Ensure this imports the Base class from your models
 
@@ -68,7 +68,13 @@ def postgres_container(request):
                 session_instance = session_factory()
             except SQLAlchemyError as e:
                 logger.error(f"Error creating the database: {e}")
-    except Exception as err:
+    except (docker.errors.APIError,
+            docker.errors.BuildError,
+            docker.errors.ContainerError,
+            docker.errors.ImageNotFound,
+            SQLAlchemyError,
+            OperationalError,
+            IntegrityError) as err:
         logger.error(str(err))
 
     def cleanup():
@@ -129,7 +135,9 @@ def api_container(request, postgres_container):
 
             # exposed_port = container.get_exposed_port(80)
             # logger.info(f"Exposed port: {exposed_port}")
-    except Exception as err:
+    except docker.errors.APIError as err:
+        logger.error(str(err))
+    except SQLAlchemyError as err:
         logger.error(str(err))
 
     def cleanup():

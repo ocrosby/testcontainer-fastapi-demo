@@ -6,6 +6,7 @@ router = APIRouter()
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
+
 @router.post("/token", tags=["auth"], summary="Get a token")
 async def token(form_data: OAuth2PasswordRequestForm = Depends()):
     """

@@ -12,6 +12,7 @@ from app.core.logging import logger
 
 from tests.bdd.fixtures.common import context
 
+
 class StepNotImplementedError(Exception):
     def __init__(self, step_name):
         super().__init__(f"Step '{step_name}' has not been implemented")
@@ -132,7 +133,6 @@ def send_request_to_resource(method: str, resource: str, context, api_container)
             context['response'] = response
         except requests.exceptions.RequestException as e:
             context['errors'].append(e)
-
 
 
 @then(parsers.parse('the response status code should be {status_code:d}'))

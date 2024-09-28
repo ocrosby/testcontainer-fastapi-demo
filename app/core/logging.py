@@ -6,7 +6,7 @@ import sys
 import logging
 import structlog
 
-from structlog.processors import add_log_level, format_exc_info, TimeStamper, format_exc_info, KeyValueRenderer
+from structlog.processors import add_log_level, TimeStamper, format_exc_info, KeyValueRenderer
 
 
 class SafeFileHandler(logging.FileHandler):
@@ -16,6 +16,7 @@ class SafeFileHandler(logging.FileHandler):
                 super().emit(record)
             except NotImplementedError:
                 self.handleError(record)
+
 
 class StreamToLogger:
     """
@@ -57,7 +58,6 @@ class StreamToLogger:
 
         :return:
         """
-        pass
 
     def isatty(self):
         """
