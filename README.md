@@ -291,6 +291,14 @@ Prune dangling images (free up disk space)
 docker image prune -f
 ```
 
+## SQLModel
+
+I have recently decided to use SQLModel instead of SQLAlchemy.  SQLModel is a library that allows you to define your
+database models using Python type hints.  It is similar to Pydantic, which is used to define data schemas.  SQLModel
+is built on top of SQLAlchemy and Pydantic, so it provides a nice way to define your database models and interact with
+your database.  I like the idea of using SQLModel because it allows you to define your database models using Python
+type hints, which makes it easier to work with your database models in your code.  It also provides a nice way to
+
 
 ## License
 
