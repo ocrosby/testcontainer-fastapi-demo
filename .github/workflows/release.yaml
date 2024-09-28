@@ -10,9 +10,6 @@ permissions:
   issues: write
   pull-requests: write
 
-env:
-  GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -40,6 +37,6 @@ jobs:
 
       - name: Run semantic-release
         env:
-          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
         run: |
           semantic-release publish
